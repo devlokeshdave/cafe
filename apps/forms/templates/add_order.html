@@ -1,0 +1,706 @@
+{% extends layout_path %}
+
+{% load static %}
+{% load i18n %}
+
+{% block title %}Vertical Layouts - Forms{% endblock %}
+
+{% block page_css %}
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+{% endblock page_css %}
+
+{% block content %}
+<h4 class="py-3 mb-4">
+  <span class="text-muted fw-light">Forms /</span> Vertical Layouts
+</h4>
+
+<!-- Basic Layout -->
+<div class="row">
+  <div class="col-xl">
+    <div class="card mb-4">
+      <div class="card-header d-flex justify-content-between align-items-center">
+        <h5 class="mb-0">Basic with Icons</h5>
+        <small class="text-muted float-end">Merged input group</small>
+      </div>
+      <div class="card-body">
+        <form>
+          {% csrf_token %}
+          <div id="alertM"></div>
+          <div style="display:none" id="print-div" class="row md-4">
+            <div   class="col-md-4 ">
+              <button id="print" class="btn btn-danger mb-3">Print</button>
+            </div>
+          </div>
+          <div class="whole">
+            <div id="info_list" class="row  md-4">
+              <div class="col-md-4 mb-3">
+                <label class="form-label" for="basic-icon-default-company">Table No.</label>
+                <div class="input-group input-group-merge">
+                 {% comment %} <select id="table" name="table" class="form-control">
+                    {% for table in tables %}
+                      <option value={{table}}>{{table}}</option>
+                    {% endfor %}
+                 </select> {% endcomment %}
+                 <input disabled value="{{table_no}}" style="border-right: 1px solid #c7cdd4;border-radius: 0 10px 10px 0;" id="table" name="table"  type="text" class="form-control"  aria-label="john.doe" aria-describedby="basic-icon-default-email2" />
+                </div>
+              </div>
+
+              <div class="col-md-4 mb-3">
+                <label class="form-label" for="basic-icon-default-email">Date</label>
+                <div class="input-group input-group-merge">
+                  <span class="input-group-text"><i class="bx bx-envelope"></i></span>
+                  <input style="border-right: 1px solid #c7cdd4;border-radius: 0 10px 10px 0;" id="date" name="date"  type="date" class="form-control" placeholder="QTy" aria-label="john.doe" aria-describedby="basic-icon-default-email2" />
+                  <p id="error_date" style="color:red;position: absolute;margin-top: 40px;"><p>
+                </div>
+              </div>
+
+
+              <div class="col-md-4 mb-3">
+                <label class="form-label" for="basic-icon-default-email">Name</label>
+                <div class="input-group input-group-merge">
+                  <span class="input-group-text"><i class="bx bx-envelope"></i></span>
+                  <input id="name" name="name"  type="text" class="form-control" placeholder="Enter the name" aria-label="john.doe" aria-describedby="basic-icon-default-email2" />
+
+                </div>
+              </div>
+
+            </div>
+
+
+            <div id="head_sh" class="row">
+              <div class="col-md-4">
+                  <label class="form-label" for="basic-icon-default-email">Item</label>
+              </div>
+              <div class="col-md-4">
+                  <label class="form-label" for="basic-icon-default-email">Amount</label>
+              </div>
+            </div>
+            <div class="header">
+
+            </div>
+            <div class="item-list">
+
+            </div>
+
+            <div class="tax">
+
+            </div>
+
+            <div class="final-bill">
+
+              <div class="row mb-3">
+                <div class="col-md-4 mb-3">
+                  <label class="form-label" for="basic-icon-default-company">Tax Name</label>
+                  <div class="input-group input-group-merge">
+                    <span id="basic-icon-default-company2" class="input-group-text"><i class="bx bx-buildings"></i></span>
+                    <input disabled value="{{tax_.name}}" style="border-right: 1px solid #c7cdd4;border-radius: 0 10px 10px 0;" type="text" id="tax_name" class="form-control" placeholder="Price" aria-label="ACME Inc." aria-describedby="basic-icon-default-company2" />
+                    <p id="error_tax" style="color:red;position: absolute;margin-top: 40px;"><p>
+                  </div>
+                </div>
+
+                <div class="col-md-4 mb-3">
+                  <label class="form-label" for="basic-icon-default-company">Tax</label>
+                  <div class="input-group input-group-merge">
+                    <span id="basic-icon-default-company2" class="input-group-text"><i class="bx bx-buildings"></i></span>
+                    <input disabled value="{{tax_.tax}}" style="border-right: 1px solid #c7cdd4;border-radius: 0 10px 10px 0;" type="number" id="tax_value" class="form-control" placeholder="Price" aria-label="ACME Inc." aria-describedby="basic-icon-default-company2" />
+                  </div>
+                </div>
+              </div>
+
+            </div>
+
+            <div style="display:none" class ="row" id="discount-add">
+              <div class="row mb-3">
+                <div class="col-md-4 mb-3">
+                  <label class="form-label" for="basic-icon-default-company">Discount</label>
+                  <div class="input-group input-group-merge">
+                    <span class="input-group-text"><i class="bx bx-buildings"></i></span>
+                    <input type="number" id="discount" class="form-control" placeholder="Price" aria-label="ACME Inc." aria-describedby="basic-icon-default-company2" />
+                    <p id="error_discount" style="color:red;position: absolute;margin-top: 40px;"><p>
+                  </div>
+                </div>
+
+                <div class="col-md-4 mb-3">
+                  <label class="form-label" for="basic-icon-default-company">Type</label>
+                  <div class="input-group input-group-merge">
+                    <span id="basic-icon-default-company2" class="input-group-text"><i class="bx bx-buildings"></i></span>
+                    <select id="discount-type" class="form-control">
+                      <option value="amount">Amount</option>
+                      <option value="percentage">Percentage</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-md-4 mb-3">
+                <button id="discount-confirm" class="btn btn-success" type="button">Confrim</button>
+              </div>
+
+            </div>
+
+            <div class="row mb-3" id="hide">
+              <div class="col-md-4 mb-3">
+                <label class="form-label" for="basic-icon-default-fullname">Item Name</label>
+                <div class="inut-group input-group-merge">
+
+                  <select class="form-control select2" id="menu0">
+                    {% for item in menu %}
+                      <option value="{{ item.id }}">{{ item.name }}</option>
+                    {% endfor %}
+                  </select>
+                </div>
+              </div>
+              <div class="col-md-4 mb-3">
+                <label class="form-label" for="basic-icon-default-company">Price</label>
+                <div class="input-group input-group-merge">
+                    <span id="basic-icon-default-company2"  class="input-group-text"><i class="bx bx-buildings"></i></span>
+                  <input type="number" disabled  id="price0" class="form-control" placeholder="Price" aria-label="ACME Inc." aria-describedby="basic-icon-default-company2" />
+                </div>
+              </div>
+
+              <div class="col-md-4 mb-3">
+                <label class="form-label" for="basic-icon-default-email">QTY</label>
+                <div class="input-group input-group-merge">
+                  <span class="input-group-text"><i class="bx bx-envelope"></i></span>
+
+                  <input id="qty"  type="number"  class="form-control" placeholder="QTy" aria-label="john.doe" aria-describedby="basic-icon-default-email2" />
+                  <p id="error_qty" style="color:red;position: absolute;margin-top: 40px;"><p>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+          <div class="row">
+            <div class="col-md-3 mb-3">
+              <label class="form-label" for="basic-icon-default-email">Customer</label>
+              <div class="form-check form-check-inline">
+                <input class="form-check-input customer-type" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="regular">
+                <label class="form-check-label" for="inlineRadio1">Regular</label>
+              </div>
+              <div class="form-check form-check-inline">
+                <input class="form-check-input customer-type" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="other">
+                <label class="form-check-label" value="other" for="inlineRadio2">Other</label>
+              </div>
+            </div>
+
+            <div id="select_regular" class="col-md-3 mb-3">
+              <label class="form-label" for="basic-icon-default-fullname">Name</label>
+              <div class="input-group input-group-merge">
+                <select class="form-control select2" id="regular" style="width: 100%;">
+                  {% for cust in customer %}
+                    <option value="{{ cust.id }}">{{ cust.name }}</option>
+                  {% endfor %}
+                  <option selected value="add">Add Customer</option>
+                </select>
+              </div>
+            </div>
+
+
+              <div class="col-md-3 mb-3 hide-think">
+                <label class="form-label" for="basic-icon-default-company">Name</label>
+                <div class="input-group input-group-merge">
+                  <span class="input-group-text"><i class="bx bx-buildings"></i></span>
+                  <input type="text" id="regular_name" class="form-control" placeholder="Price" aria-label="ACME Inc." aria-describedby="basic-icon-default-company2" />
+                  <p id="error_name" style="color:red;position: absolute;margin-top: 40px;"><p>
+                </div>
+              </div>
+
+              <div class="col-md-3 mb-3 hide-think">
+                <label class="form-label" for="basic-icon-default-company">Number</label>
+                <div class="input-group input-group-merge">
+                  <span class="input-group-text"><i class="bx bx-buildings"></i></span>
+                  <input type="number" id="regular_number" class="form-control" placeholder="Price" aria-label="ACME Inc." aria-describedby="basic-icon-default-company2" />
+                  <p id="error_number" style="color:red;position: absolute;margin-top: 40px;"><p>
+                </div>
+              </div>
+            </div>
+
+
+          <div class="btn_list">
+            <button id="add" type="button" class="btn btn-danger">Add</button>
+            <button id="confirm" class="btn btn-success" type="button">Confirm</button>
+            <button type="button" id="submit" class="btn btn-primary">Submit</button>
+            <button  style="display:none" id="add-discount" type="button" class="btn btn-danger">Add Discount</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}
+
+{% block page_js %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.3/html2pdf.bundle.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.3.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.24/jspdf.plugin.autotable.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+<script>
+  const today = new Date().toISOString().split('T')[0];
+
+
+    // Set the input's value to today's date
+    document.getElementById('date').value = today;
+    $(document).ready(function() {
+      $("#tax_name").val("{{tax_.name}}")
+      $("#tax_value").val("{{tax_.tax}}")
+
+      const set_local = (key, value) =>{
+          let table_n = localStorage.getItem("{{table_no}}");
+          if(table_n){
+            let current_val = JSON.parse(table_n)
+
+                current_val["item"][key] = value
+                let setI = JSON.stringify(current_val)
+                localStorage.setItem("{{table_no}}",setI);
+
+
+          }else{
+
+              let dict = {
+                "item": {
+                  [key]: value
+                }
+              };
+              console.log("go",dict)
+              let setI = JSON.stringify(dict)
+              localStorage.setItem("{{table_no}}",setI);
+
+          }
+
+      }
+
+      console.log("check...")
+        let total  = 0
+        let items_list = {}
+        let copy = {}
+        let disc_am = 0
+        let cust_type = "other"
+
+        const get_local = () =>{
+          if(localStorage.getItem("{{table_no}}")){
+            let table_n = JSON.parse(localStorage.getItem("{{table_no}}"))
+            if(table_n["item"]){
+            Object.keys(table_n["item"]).map((e)=>{
+                  key_pat = table_n["item"][e]
+                  console.log("kkk==>",key_pat,table_n )
+
+                  $(".item-list").append(`
+                  <div class="row" id=${e}_del>
+                       <div class="col-md-4">
+                           <p id=${e}>${e} X ${key_pat["qty"]}</p>
+                       </div>
+                       <div  class="col-md-1">
+                           <p id=${e}_price>${key_pat["price"] * key_pat["qty"]}</p>
+                       </div>
+                       <div  class="col-md-4">
+                           <img style="width:20px;" class="delete-btn" onclick="myFunction(${e})" src="{% static 'img/favicon/delete.png' %}"/>
+                       </div>
+
+                   </div>`)
+                   if(e in copy){
+                    console.log("coppy",copy)
+                    copy[e]["qty"] = key_pat["qty"]
+                    copy[e]["price"] = key_pat["price"]
+                    total += parseFloat(key_pat["price"])
+                   }else{
+                    copy[e] = {"qty":key_pat["qty"],price:key_pat["price"]}
+
+                    total += parseFloat(key_pat["price"])
+                   }
+                })
+              }
+            }
+
+        }
+        get_local()
+        $("#select_regular").hide()
+        $(".hide-think").hide()
+        $(".customer-type").change(function(){
+
+           // Get the value of the selected radio button
+           var selectedValue = $("input[name='inlineRadioOptions']:checked").val();
+           console.log("Selected value: " + selectedValue);
+
+           // Perform some action based on the selected value
+           if (selectedValue === "regular") {
+            $("#select_regular").show()
+            $(".hide-think").show()
+            cust_type = 'regular'
+
+           } else if (selectedValue === "other") {
+            $("#select_regular").hide()
+            $(".hide-think").hide()
+               // Action for option2
+               console.log("Option 2 selected",selectedValue);
+               cust_type = "other"
+           }
+        })
+
+        $("#regular").change(function(){
+          if(("#regular").val()!="other"){
+            $(".hide-think").show()
+          }
+          $(".hide-think").show()
+        })
+
+        function updatePrice() {
+          let price;
+          let id = $('#menu0').val();
+          {% for item in menu %}
+              if ("{{ item.id }}" == id) {
+                  price = "{{ item.price }}";
+              }
+          {% endfor %}
+          $('#price0').val(price);
+        }
+
+        window.myFunction = function(ids){
+
+          var $ids = $(ids);
+
+          // Get the id attribute value using jQuery
+          var idValue = $ids.attr('id');
+          console.log("::::",copy,ids,idValue)
+          total -= parseFloat(copy[idValue]["price"]);
+          delete copy[idValue];
+          $(`#${idValue}_del`).remove(); // Remove the corresponding row
+          let table_n = localStorage.getItem("{{table_no}}")
+          if(table_n){
+            table_n = JSON.parse(table_n)
+            console.log("copy",copy)
+            table_n["item"] = {...copy}
+            console.log(table_n,"kke")
+            let convert_t = JSON.stringify(table_n)
+            localStorage.setItem("{{table_no}}",convert_t)
+          }
+
+        };
+
+        // Initialize the select2 plugin
+        $('#menu0').select2({
+          placeholder: "Select an option",
+          allowClear: true
+        });
+
+        $('#regular').select2({
+          placeholder: "Select an option",
+          allowClear: true
+        });
+
+
+        // Update price on change
+        $('#menu0').change(function() {
+          updatePrice();
+        });
+
+        $("#qty").change(function(){
+          console.log("goo....")
+          $("#error_qty").text("");
+        })
+
+        $("#discount").change(function(){
+
+          console.log("goo....")
+          $("#error_discount").text("");
+        })
+
+
+        function isFloat(n) {
+          n = parseFloat(n);
+          return !isNaN(n) && n % 1 !== 0;
+      }
+
+        $('#add').click(function() {
+            let selectVal =  $('#menu0').val();
+            let price =  $('#price0').val();
+            let qty =  $('#qty').val();
+
+
+            if(!qty){
+              $("#error_qty").text("Please Enter the QTY")
+              return
+            }
+             if(qty <= 0){
+              $("#error_qty").text("Please enter more than zero number.")
+              return
+            }
+            console.log("qty...",qty,isFloat(qty))
+            if(isFloat(qty)){
+
+              $("#error_qty").text("Please enter only number.")
+              return
+            }
+            let con_d = {"name":selectVal}
+
+
+
+            let selectElement = document.getElementById('menu0');
+            let selectedOption = selectElement.options[selectElement.selectedIndex];
+
+            let selectedName = selectedOption.textContent;
+
+            total += price * qty
+
+            if(!(selectedName in copy)){
+              console.log("gooog..")
+              copy[selectedName] = {"price":price, "qty":qty}
+              $(".item-list").append(`
+              <div class="row" id=${selectedName}_del>
+                   <div class="col-md-4">
+                       <p id=${selectedName}>${selectedName} X ${qty}</p>
+                   </div>
+                   <div  class="col-md-1">
+                       <p id=${selectedName}_price>${price * qty}</p>
+                   </div>
+                   <div  class="col-md-4">
+                       <img style="width:20px;" class="delete-btn" onclick="myFunction(${selectedName})" src="{% static 'img/favicon/delete.png' %}"/>
+                   </div>
+
+               </div>`)
+               copy[selectedName] = {"price":parseFloat(price),"qty":parseInt(qty)}
+            }else{
+
+              copy[selectedName]["price"]  += price * qty
+              copy[selectedName]["qty"]  += parseInt(qty)
+              if("price" in copy[selectedName]){
+                $(`#${selectedName}`).text(
+                  `${selectedName} X ${copy[selectedName]["qty"]}`
+                  )
+                $(`#${selectedName}_price`).text(
+
+                `${copy[selectedName]["price"]}`
+
+                )
+
+              }
+
+            }
+
+            con_d = {...copy[selectedName]}
+            set_local(selectedName,con_d)
+          });
+
+          $("#discount-confirm").click(function(){
+            let val_di = $("#discount").val();
+            if(!val_di){
+              $("#error_discount").text("Please Enter the discount amount")
+              return
+            }
+
+            document.getElementById("discount-add").style.display = "none";
+
+
+             let inside_disc = ""
+            if(val_di){
+              let typ = $("#discount-type")
+
+              if(typ.val() === "amount"){
+                disc_am = val_di
+              }else{
+                disc_am = (val_di/100) * val_di
+
+              }
+              inside_disc = ` <div class="row">
+                  <div class="col-md-4">
+                      <p>Discount</p>
+                  </div>
+                  <div class="col-md-4">
+                      <p>${disc_am}</p>
+                  </div>
+              </div>`
+              total -= disc_am
+              $("#grand-total").text(total)
+              $("#disc").append(inside_disc)
+            }
+
+          })
+
+          $("#add-discount").click(function(){
+            document.getElementById("discount-add").style.display = "block";
+          })
+
+          $("#date").change(function(){
+            console.log("goo....")
+            $("#error_date").text("");
+          })
+
+          $('#confirm').click(function(){
+
+
+            document.getElementById("add-discount").style.display = "inline";
+            $(".delete-btn").remove();
+            $("#add").hide();
+            $("#confirm").hide();
+
+            let copy_total = total
+
+
+            let tax = 0
+            let tax_c = parseFloat("{{tax_.tax}}")
+              console.log("good.",tax_c)
+                tax = (tax_c/100) * total
+                total += tax
+
+
+
+
+            $(".tax").append(`
+             <div class="row">
+                <div class="col-md-4">
+                    <p>Total</p>
+                </div>
+                <div class="col-md-4">
+                    <p>${copy_total}</p>
+                </div>
+            </div>
+              <div class="row">
+                <div class="col-md-4">
+                    <p>tax</p>
+                </div>
+                <div class="col-md-4">
+                    <p>${tax}</p>
+                </div>
+            </div>
+            <div id="disc"></div>
+
+              <div class="row">
+                <div class="col-md-4">
+                    <p>Grand Total</p>
+                </div>
+                <div id="grand-total" class="col-md-4">
+                    <p>${total}</p>
+                </div>
+            </div>
+            `)
+
+          $("#hide").hide();
+          $(".final-bill").hide();
+          })
+
+
+        // Update price on page load if there is a pre-selected option
+        updatePrice();
+
+
+        $("#submit").click(function(){
+
+
+          // Get values from form elements
+          let table = $("#table").val(); // Assuming #table is an input element
+          let date = $("#date").val(); // Assuming #date is an input element
+          if(!date){
+            $("#error_date").text("Please Enter Date")
+            return
+          }
+
+
+
+
+
+          let tax_val = parseFloat("{{tax_.tax}}") // Assuming #tax is an input element
+          let send_dict = {
+              "cafe": "{{ id }}", // Replace with actual value if dynamic
+              "table": table,
+              "date": date,
+              "items": copy, // Assuming copy is defined elsewhere
+              "tax": tax_val,
+              "discount": disc_am, // Assuming disc_am is defined elsewhere
+              "total": total,
+              "name":$("#name").val(),
+              "regular_name":$("#regular_name").val(),
+              "regular_number":$("#regular_number").val(),
+              "cust_type":cust_type
+
+          };
+
+          let final = {"_method": "POST", "data": JSON.stringify(send_dict)};
+
+          $.ajax({
+              type: 'POST',
+              headers: {
+                  'X-HTTP-Method-Override': 'POST'
+              },
+              url: "{% url 'add-order' %}", // Replace with actual URL
+              data: final,
+              beforeSend: function(xhr, settings) {
+                  xhr.setRequestHeader("X-CSRFToken", "{{ csrf_token }}"); // Replace with actual CSRF token value
+              },
+              success: function(response) {
+                let date_v = $("#date").val()
+                let name_v = $("#name").val()
+                $(".header").append(
+                  `<div class="row md-3">
+                    <div class="col-md-4">
+                      <p>${date_v}<p>
+                    </div>
+                     <div class="col-md-4">
+                      <p>${name_v}<p>
+                    </div>
+                  </div>`
+                )
+
+                $("#info_list").remove();
+                $(".btn_list").remove();
+                $("#head_sh").remove();
+
+              document.getElementById("print-div").style.display = "block";
+
+
+            if(response.msg !== undefined){
+              $('#alertM').append(`<div class="alert alert2 alert-success" role="alert">${response.msg}</div>`)
+            }
+            else{
+              $('#alertM').append(`<div class="alert alert2 alert-danger" role="alert">${response.error}</div>`)
+            }
+
+
+            setTimeout(function() {
+              $('.alert2').fadeOut('slow', function() {
+                  $(this).remove();
+              });
+             // location.reload();
+          }, 3000);
+
+              },
+              error: function(xhr, textStatus, errorThrown) {
+                const response = JSON.parse(xhr.responseText);
+                if("error" in response){
+                  $('#alertM').append(`<div class="alert alert-danger" role="alert">${response["error"]}</div>`)
+                }else{
+                  $('#alertM').append('<div class="alert alert-danger" role="alert">Please check this form again data not save</div>')
+                }
+                setTimeout(function() {
+                  $('.alert').fadeOut('slow', function() {
+                      $(this).remove();
+                  });
+              }, 3000);
+              }
+          });
+      });
+
+      $('#print').click(function() {
+        // Create a new jsPDF instance
+        event.preventDefault();
+        var element = document.querySelector('.whole'); // Select the container to convert to PDF
+        var opt = {
+          margin:       1,
+          filename:     'order.pdf',
+          image:        { type: 'jpeg', quality: 0.98 },
+          html2canvas:  { scale: 2 },
+          jsPDF:        { unit: 'in', format: 'letter', orientation: 'portrait' }
+        };
+
+        // Start the PDF generation
+        html2pdf().set(opt).from(element).save();
+    });
+
+      });
+
+
+
+</script>
+{% endblock page_js %}

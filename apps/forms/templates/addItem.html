@@ -1,0 +1,388 @@
+{% extends layout_path %}
+
+{% load static %}
+{% load i18n %}
+
+{% block title %}Vertical Layouts - Forms{% endblock %}
+
+{% block page_css %}
+
+ <!-- Bootstrap CSS -->
+{% endblock page_css %}
+
+{% block content %}
+<h4 class="py-3 mb-4">
+  <span class="text-muted fw-light">Forms /</span> Add Item
+</h4>
+<!-- Modal -->
+<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="staticBackdropLabel">Add Item</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div id="alertM"></div>
+        <form id="Tform"  action="get_truck_numbers/" method="post">
+       
+            <div class="mb-3">
+              <label for="recipient-name" class="col-form-label">Transport</label>
+              <input name="name" type="text" name class="form-control" id="recipient-name">
+            </div>
+            <div class="mb-3">
+              <label for="message-text" class="col-form-label">City</label>
+              <input name="city" type="text" class="form-control" id="message-text"></input>
+            </div>
+      
+          <button type="submit" class="btn btn-primary">Confirm</button>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button id="closeM" type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+       
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Basic Layout -->
+<div id="alert"></div>
+<div class="row">
+  <div class="col-xl">
+    <div class="card mb-4">
+      <div class="card-header d-flex justify-content-between align-items-center">
+        <h5 class="mb-0">Basic with Icons</h5>
+        <small class="text-muted float-end">Merged input group</small>
+      </div>
+      {% comment %} <div class="row">
+        <div class="col-2">
+          <button type="button" class="mx-2 btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+          Add Transport
+          </button>
+        </div>
+      </div>   {% endcomment %}
+      <div class="card-body" style="max-height: 500px;overflow: auto;">
+        <form id="myForm"  action="add-item" method="post">
+          <p class="centered-border">item</p>
+        <div class="row mb-3">
+            <div class="col-md-4 mb-3">
+                <label class="form-label" for="basic-icon-default-fullname">Enter Item Name</label>
+                <div class="input-group input-group-merge">
+                    <span class="input-group-text"><i class="bx bx-user"></i></span>  
+                    <input 
+                    name="item" type="text" id="item0" class="form-control" placeholder="Enter item name" required/>
+                </div>
+                <p id="item_erorr0"></p>
+            </div>
+            <div class="col-md-4 mb-3">
+              <label class="form-label" for="basic-icon-default-company">Pieces Price</label>
+              <div class="input-group input-group-merge">
+                <span id="basic-icon-default-company2" class="input-group-text"><i class="bx bx-buildings"></i></span>
+                <input 
+                 name="diesel" type="number" id="price0" class="form-control loop" placeholder="Enter item price" required/>
+              </div>
+              <p id="price_erorr0"></p>
+            </div>
+
+            <div class="col-md-4 mb-3">
+              <label class="form-label" for="basic-icon-default-company">Date</label>
+              <div class="input-group input-group-merge">
+                <span id="basic-icon-default-company2" class="input-group-text"><i class="bx bx-buildings"></i></span>
+                <input 
+                 name="date" type="date" id="date0" class="form-control" required/>
+              </div>
+              <p id="date_erorr0"></p>
+            </div>
+          </div>
+
+          <div class="row mb-3">
+            <div class="col-md-3 mb-3">
+                <label class="form-label" for="basic-icon-default-fullname">QTY</label>
+                <div class="input-group input-group-merge">
+                    <span class="input-group-text"><i class="bx bx-user"></i></span>  
+                    <input 
+                    name="qty" type="number" id="qty0" class="form-control" placeholder="Enter item QTY" required/>
+                </div>
+                <p id="qty_erorr0"></p>
+            </div>
+            <div class="col-md-3 mb-3">
+              <label class="form-label" for="basic-icon-default-company">Pieces QTY</label>
+              <div class="input-group input-group-merge">
+                <span id="basic-icon-default-company2" class="input-group-text"><i class="bx bx-buildings"></i></span>
+                <input 
+                 name="pieces_qty" type="number" id="pieces_qty0" class="form-control " placeholder="Enter per piece  Qty" required/>
+              </div>
+              <p id="pieces_qty_erorr0"></p>
+            </div>
+
+            <div class="col-md-3 mb-3">
+              <label class="form-label" for="basic-icon-default-company">Category</label>
+              <div class="input-group input-group-merge">
+                <span id="basic-icon-default-company2" class="input-group-text"><i class="bx bx-buildings"></i></span>
+               <select class="form-select" required id="category0">
+                  <option values="Beverages">Beverages</option>
+                  <option values="Breakfast">Breakfast</option>
+                  <option values="Lunch">Lunch</option>
+                  <option values="Snacks">Snacks</option>
+                  <option values="Desserts">Desserts</option>
+                  <option values="Specialty Items">Specialty Items</option>
+                  <option values="Salads">Salads</option>
+               </select>
+            </div>
+            <p id="category_erorr0"></p>
+          </div>
+
+          <div class="col-md-3 mb-3">
+            <label class="form-label" for="basic-icon-default-company">Total Amount</label>
+            <div class="input-group input-group-merge">
+              <span id="basic-icon-default-company2" class="input-group-text"><i class="bx bx-buildings"></i></span>
+              <input 
+               name="total" type="number" id="total0" class="form-control " placeholder="Enter item total" required/>
+            </div>
+            <p id="total_erorr0"></p>
+          </div>
+        </div>
+
+        
+          <div id="row-add"></div>
+          <button id="add" type="button" class="btn btn-success">Add</button>
+          <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<!-- jQuery -->
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<!-- Bootstrap JS -->
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+<!-- Bootstrap Select JS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.14/js/bootstrap-select.min.js"></script>
+
+<script>
+  $("#Tform").submit(function(event){
+    event.preventDefault();
+    var formData = $(this).serialize();
+
+    $.ajax({
+      type: 'POST',
+      headers: {
+        'X-HTTP-Method-Override': 'POST'
+      },
+      url: $(this).attr('action'),
+      data: formData,
+      
+      beforeSend: function(xhr, settings) {
+        xhr.setRequestHeader("X-CSRFToken", "{{ csrf_token }}"); // Set CSRF token
+      },
+      success: function(response) {
+          // Handle successful response here, if needed
+          console.log("response",response.status)
+          let msg = "save"
+
+      if(response.msg !== undefined){
+     
+        $('#alertM').append(`<div class="alert alert2 alert-success" role="alert">${msg}</div>`)
+        setTimeout(function() {
+          $('.alert2').fadeOut('slow', function() {
+              $(this).remove();
+          });
+          document.getElementById("closeM").click();
+          location.reload();
+      }, 3000);
+      
+      
+    }else{
+      $('#alertM').append(`<div class="alert alert2 alert-danger" role="alert">${response.error}</div>`)
+    }
+      
+      },
+      error: function(xhr, status, error) {
+          // Handle error
+  
+          console.error(xhr.responseText);
+        
+          if(xhr.responseText){
+
+            const response = JSON.parse(xhr.responseText);
+          if("error" in response){
+            $('#alertM').append(`<div class="alert alert2 alert-danger" role="alert">${response["error"]}</div>`)
+          }else{
+            $('#alertM').append('<div class="alert alert2 alert-danger" role="alert">Please check this form again data not save</div>')
+          }
+          setTimeout(function() {
+            $('.alert2').fadeOut('slow', function() {
+                $(this).remove();
+            });
+        }, 3000);
+        }
+   
+      }
+  });
+  })
+  
+  $('#myForm').submit(function(event) {
+    event.preventDefault();
+
+   
+      var inputs = [];
+      let i = 0
+    
+      document.querySelectorAll('.loop').forEach( input => {
+        //console.log(this.constructor.name); // Window
+        let dict = {}
+        console.log("go--a,goog11",input.id,`transport${i}`)
+        if(input.id){
+          console.log
+          console.log("fol",document.getElementById(`item${i}`).value )
+          if(input.id===`price${i}`){
+            dict[`name`] = document.getElementById(`item${i}`).value 
+            dict[`price`] = document.getElementById(`price${i}`).value
+            dict[`date`] = document.getElementById(`date${i}`).value
+            dict[`qty`] = document.getElementById(`qty${i}`).value
+            dict[`pieces_qty`] = document.getElementById(`pieces_qty${i}`).value
+            dict[`total`] = document.getElementById(`total${i}`).value
+            dict["category"] = document.getElementById(`category${i}`).value
+            dict['id'] = i
+          }
+          
+          inputs.push(dict);
+        }
+        i++;
+      });
+      console.log("gogog",inputs)
+      $.ajax({
+        type: 'POST',
+        headers: {
+          'X-HTTP-Method-Override': 'POST'
+        },
+        url: $(this).attr('action'),
+        data: { data: JSON.stringify(inputs), _method:'POST' },
+        beforeSend: function(xhr, settings) {
+          xhr.setRequestHeader("X-CSRFToken", "{{ csrf_token }}");
+        },
+        success: function(response) {
+          let msg = "save"
+          if(response.msg !== undefined){
+            
+              $('#alert').append(`<div class="alert alert-success" role="alert">Data ${msg} successfully</div>`);
+              setTimeout(function() {
+                $('.alert').fadeOut('slow', function() {
+                  $(this).remove();
+                });
+              }, 3000);
+              $('#myForm')[0].reset();
+            }
+          },
+        
+        error: function(xhr, status, error) {
+          console.error(xhr.responseText);
+          if(xhr.responseText){
+            const response = JSON.parse(xhr.responseText);
+            if("error" in response){
+              $('#alert').append(`
+              <div id="alert" class="alert alert-danger alert-dismissible" role="alert">${response["error"]} 
+              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>`);
+            } else {
+              $('#alert').append('<div class="alert alert-danger" role="alert">Please check this form again data not save</div>');
+            }
+          }
+        }
+      }); 
+      });    
+  
+
+  $(document).ready(function() {
+    let clickCount = 0;
+
+    $("#add").click(function(){
+      clickCount++;
+      $('#row-add').append(`
+      <p class="centered-border">Item ${clickCount}</p>
+      <div class="row mb-3">
+        <div class="col-md-4 mb-3">
+          <label class="form-label" for="Item${clickCount}">Enter Item Name</label>
+          <div class="input-group input-group-merge">
+            <span class="input-group-text"><i class="bx bx-user"></i></span>
+            <input name="item${clickCount}" type="text" id="item${clickCount}" class="form-control" placeholder="Enter Item Name" required/>
+          </div>
+          <p id="item_erorr${clickCount}"></p>
+        </div>
+        <div class="col-md-4 mb-3">
+          <label class="form-label" for="diesel${clickCount}">Enter Price</label>
+          <div class="input-group input-group-merge">
+            <span class="input-group-text"><i class="bx bx-buildings"></i></span>
+            <input  name="price${clickCount}" type="number" id="price${clickCount}" class="form-control loop" placeholder="Enter Price" required/>
+          </div>
+           <p id="price_erorr${clickCount}"></p>
+        </div>
+
+        <div class="col-md-4 mb-3">
+              <label class="form-label" for="basic-icon-default-company">Date</label>
+              <div class="input-group input-group-merge">
+                <span id="basic-icon-default-company2" class="input-group-text"><i class="bx bx-buildings"></i></span>
+                <input 
+                 name="date${clickCount}" type="date" id="date${clickCount}" class="form-control " required/>
+              </div>
+                <p id="date_erorr${clickCount}"></p>
+            </div>
+      </div>
+       <div class="row mb-3">
+            <div class="col-md-3 mb-3">
+                <label class="form-label" for="basic-icon-default-fullname">QTY</label>
+                <div class="input-group input-group-merge">
+                    <span class="input-group-text"><i class="bx bx-user"></i></span>  
+                    <input 
+                    name="qty" type="number" id="qty${clickCount}" class="form-control" placeholder="Enter item QTY" required/>
+                </div>
+                 <p id="qty_erorr${clickCount}"></p>
+            </div>
+            <div class="col-md-3 mb-3">
+              <label class="form-label" for="basic-icon-default-company">Pieces QTY</label>
+              <div class="input-group input-group-merge">
+                <span id="basic-icon-default-company2" class="input-group-text"><i class="bx bx-buildings"></i></span>
+                <input 
+                 name="pieces_qty" type="number" id="pieces_qty${clickCount}" class="form-control " placeholder="Enter per piece  Qty" required/>
+              </div>
+              <p id="pieces_qty_erorr${clickCount}"></p>
+            </div>
+
+              <div class="col-md-3 mb-3">
+              <label class="form-label" for="basic-icon-default-company">Category</label>
+              <div class="input-group input-group-merge">
+                <span id="basic-icon-default-company2" class="input-group-text"><i class="bx bx-buildings"></i></span>
+               <select class="form-select" id="category${clickCount}  ">
+                  <option values="Beverages">Beverages</option>
+                  <option values="Breakfast">Breakfast</option>
+                  <option values="Lunch">Lunch</option>
+                  <option values="Snacks">Snacks</option>
+                  <option values="Desserts">Desserts</option>
+                  <option values="Specialty Items">Specialty Items</option>
+                  <option values="Salads">Salads</option>
+               </select>
+            </div>
+             <p id="category_erorr${clickCount}"></p>
+          </div>
+
+            <div class="col-md-3 mb-3">
+              <label class="form-label" for="basic-icon-default-company">Total Amount</label>
+              <div class="input-group input-group-merge">
+                <span id="basic-icon-default-company2" class="input-group-text"><i class="bx bx-buildings"></i></span>
+                <input 
+                 name="total" type="number" id="total${clickCount}" class="form-control " placeholder="Enter item total" required/>
+              </div>
+               <p id="total_erorr${clickCount}"></p>
+            </div>
+          </div>
+
+          
+`);
+      // Refresh the selectpicker to apply Bootstrap Select plugin to new elements
+    });
+  });
+</script>
+{% endblock %}

@@ -1,0 +1,34 @@
+.custom-select {
+    position: relative;
+    display: inline-block;
+    
+  }
+  .select-items {
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 160px;
+    border: 1px solid #ddd;
+    z-index: 99;
+  }
+  .select-items div {
+    color: black;
+    padding: 8px 16px;
+    cursor: pointer;
+  }
+  .select-items div:hover {
+    background-color: #ddd;
+  }
+  .select-selected {
+    background-color: #f1f1f1;
+    padding: 8px 16px;
+    border: 1px solid #ddd;
+    cursor: pointer;
+  }
+  .select-hide {
+    display: none;
+  }
+  .select-search {
+    padding: 8px;
+    margin: 8px;
+    border: 1px solid #ddd;
+  }

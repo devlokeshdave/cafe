@@ -1,0 +1,93 @@
+{% extends layout_path %}
+
+{% load static %}
+{% load i18n %}
+
+{% block title %}Horizontal Layouts - Forms{% endblock %}
+
+{% block content %}
+<h4 class="py-3 mb-4">
+  <span class="text-muted fw-light">Forms /</span> Horizontal Layouts
+</h4>
+
+<!-- Basic Layout & Basic with Icons -->
+<div class="row">
+  <!-- Basic Layout -->
+  <div class="col-lg">
+    <div class="card mb-4">
+      <h5 class="card-header">Basic Badges</h5>
+      <div class="card-body">
+        <div class="text-light small fw-medium">Default</div>
+        <div class="demo-inline-spacing">
+          {% for table in tables %}
+          <span
+            onclick="goto('{{ forloop.counter0 }}')"
+          style="width: 200px;
+            height: 200px;
+            text-align: center;
+            align-content: center;" class="badge bg-primary">{{table}}
+
+            <span onclick = "add_table('remove')" style="position: absolute;
+              margin-top: -90px;
+              font-size: 16px;
+              margin-left: 60px;">X
+            </span>
+          </span>
+          {% endfor %}
+          <span
+          id="add_table"
+          onclick = "add_table('add')"
+          style="width: 200px;
+            height: 200px;
+            text-align: center;
+            align-content: center;" class="badge bg-primary">
+                
+            <img style="width:80px;" class="delete-btn"  src="{% static 'img/favicon/plus.png' %}"/>
+            </span>
+          </span>
+        </div>
+      </div>
+      <hr class="m-0" />
+    </div>
+  </div>
+</div>
+{% endblock %}
+{% block page_js %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.3/html2pdf.bundle.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.3.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.24/jspdf.plugin.autotable.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+<script>
+    $(document).ready(function() {
+      window.goto = function(id) {
+        let one = parseInt(id) + 1
+        console.log("one",one)
+        window.location.href = "{% url 'add-order' %}" + "/" + one;
+    }
+   
+    window.add_table = function(value){
+         let final_data = {"type":value}
+        $.ajax({
+          type:"POST",
+          headers:{
+             'X-HTTP-Method-Override': 'POST',
+          },
+          url:"{% url 'table-list' %}",
+          data:final_data,
+          beforeSend: function(xhr, settings) {
+            xhr.setRequestHeader("X-CSRFToken", "{{ csrf_token }}"); // Replace with actual CSRF token value
+        },success: function(response) {
+          location.reload();
+        }
+        
+        })
+
+      }
+    });         
+    
+  
+
+</script>
+{% endblock page_js %}

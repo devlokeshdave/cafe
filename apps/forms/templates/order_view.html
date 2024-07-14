@@ -1,0 +1,123 @@
+{% extends layout_path %}
+
+{% load static %}
+{% load i18n %}
+
+{% block title %}Vertical Layouts - Forms{% endblock %}
+
+{% block page_css %}
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+{% endblock page_css %}
+
+{% block content %}
+<h4 class="py-3 mb-4">
+  <span class="text-muted fw-light">Forms /</span> Vertical Layouts
+</h4>
+
+<!-- Basic Layout -->
+<div class="row">
+  <div class="col-xl">
+    <div class="card mb-4">
+      <div class="card-header d-flex justify-content-between align-items-center">
+        <h5 class="mb-0">Order List View</h5>
+        <small class="text-muted float-end">Whole Order</small>
+      </div>
+      <button style="margin-left: 10px;width: 70px;" id="print" class="btn btn-danger">Print</button>
+      <div class="card-body">
+        <form>
+          {% csrf_token %}
+        
+            <div class="whole">
+                <div id="info_list" class="row  md-4">
+                
+                    <div class="col-md-4 m">
+                     <p>{{ order.date}}</p>
+                    </div>
+
+                    <div class="col-md-4 m">
+                        <p>{{ order.name}}</p>
+                    </div>
+                </div>
+                {% for item_key, item_value in order.items.items %}
+                    <div id="info_list" class="row md-4">
+                        <div class="col-md-4 m">
+                            <p>{{ item_key }} X {{ item_value.qty }}</p>
+                        </div>
+                        <div class="col-md-4 m">
+                            <p>{{ item_value.price }}</p>
+                        </div>
+                    </div>
+                {% endfor %}
+                  
+                  <div id="info_list" class="row  md-4">
+                
+                    <div class="col-md-4 m">
+                     <p>Tax</p>
+                    </div>
+                    
+                      <div class="col-md-4 m">
+                          <p>{{ order.tax}}</p>
+                      </div>
+                  </div>
+                  {% if discount > 0 %}
+                  <div id="info_list" class="row  md-4">
+                
+                    <div class="col-md-4 m">
+                     <p>Discount</p>
+                    </div>
+                    
+                      <div class="col-md-4 m">
+                          <p>{{ order.discount}}</p>
+                      </div>
+                  </div>
+                  {% endif %}
+                  <div id="info_list" class="row">
+                
+                    <div class="col-md-4 m">
+                     <p>Total</p>
+                    </div>
+                    
+                      <div class="col-md-4 m">
+                          <p>{{ order.total}}</p>
+                      </div>
+                  </div>
+            </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}
+
+{% block page_js %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.3/html2pdf.bundle.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.3.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.24/jspdf.plugin.autotable.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+<script>
+    $(document).ready(function() {
+      $('#print').click(function() {
+        // Create a new jsPDF instance
+        event.preventDefault(); 
+        var element = document.querySelector('.whole'); // Select the container to convert to PDF
+        var opt = {
+          margin:       1,
+          filename:     'order.pdf',
+          image:        { type: 'jpeg', quality: 0.98 },
+          html2canvas:  { scale: 2 },
+          jsPDF:        { unit: 'in', format: 'letter', orientation: 'portrait' }
+        };
+    
+        // Start the PDF generation
+        html2pdf().set(opt).from(element).save();
+    });
+
+      });
+
+          
+
+</script>
+{% endblock page_js %}
