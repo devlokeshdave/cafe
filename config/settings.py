@@ -41,7 +41,8 @@ DEBUG = os.environ.get("DEBUG", 'True').lower() in ['true', 'yes', '1']
 
 
 # https://docs.djangoproject.com/en/dev/ref/settings/#allowed-hosts
-ALLOWED_HOSTS = ["localhost", "0.0.0.0", "127.0.0.1"]
+ALLOWED_HOSTS = ["localhost", "0.0.0.0", "127.0.0.1","davesoftware.in","39a8-2401-4900-881a-6f21-184b-a6a0-9ba4-3db1.ngrok-free.app","https://39a8-2401-4900-881a-6f21-184b-a6a0-9ba4-3db1.ngrok-free.app"]
+CSRF_TRUSTED_ORIGINS = ['https://39a8-2401-4900-881a-6f21-184b-a6a0-9ba4-3db1.ngrok-free.app']
 
 # Current DJANGO_ENVIRONMENT
 ENVIRONMENT = os.environ.get("DJANGO_ENVIRONMENT", default="local")
@@ -69,6 +70,8 @@ INSTALLED_APPS = [
     "apps.tables",
 ]
 
+
+
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "whitenoise.middleware.WhiteNoiseMiddleware",
@@ -80,6 +83,17 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
+
+
+
+SESSION_ENGINE = 'django.contrib.sessions.backends.db'
+SESSION_COOKIE_NAME = 'nuwnew7uhn4gv5g7kktnkcrcxn16lfzh'
+SESSION_COOKIE_AGE = 86400  # 1 day
+SESSION_COOKIE_SECURE = False  # Set to True if using HTTPS
+SESSION_COOKIE_HTTPONLY = True
+SESSION_COOKIE_PATH = '/'
+SESSION_SAVE_EVERY_REQUEST = False  # Save the session to the database on every request
+SESSION_EXPIRE_AT_BROWSER_CLOSE = False
 
 ROOT_URLCONF = "config.urls"
 
@@ -113,11 +127,10 @@ WSGI_APPLICATION = "config.wsgi.application"
 
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
-
 DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
 

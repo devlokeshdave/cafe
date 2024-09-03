@@ -1,6 +1,6 @@
 from django.urls import path
 from .views import FormsView
-from .views import add_item, menu, add_order, order_list, tableList, tax_show, inventory, max_order
+from .views import add_item, menu, add_order, order_list, tableList, tax_show, inventory, max_order, entry
 
 
 
@@ -27,5 +27,6 @@ urlpatterns = [
     path("table-list",tableList,name="table-list"),
     path("tax-show",tax_show,name="tax-show"),
     path("tax-show/<str:pk>",tax_show,name="tax-show"),
-    path("max-order",max_order, name="max-order")
+    path("max-order",max_order, name="max-order"),
+    path("entry",entry,name="entry")
 ]

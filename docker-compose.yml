@@ -15,9 +15,9 @@ services:
       - db
 
   db:
-    image: postgres:12
+    image: mysql:5.7
     volumes:
-      - postgres_data:/var/lib/postgresql/data/
+      - mysql_data:/var/lib/mysql
 
   nginx:
     build:
@@ -29,4 +29,4 @@ services:
       - web
 
 volumes:
-  postgres_data:
+  mysql_data:

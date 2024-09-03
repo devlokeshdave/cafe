@@ -28,3 +28,23 @@ class Account_balance(models.Model):
 
     def __str__(self):
         return self.customer.name
+
+class Kot(models.Model):
+    cafe = models.ForeignKey(cafe, on_delete=models.CASCADE)
+    items = models.JSONField()
+    sendDate = models.DateField()
+    sendTime = models.TimeField()
+    receiveTime = models.TimeField(blank=True, null=True)
+    note = models.TextField(blank=True, null=True)
+    active = models.BooleanField(default=False, blank=True)
+    table = models.CharField(default="Table",max_length=50)
+    print = models.BooleanField(default=False, blank=True)
+    def __str__(self):
+        return str(self.sendDate)
+
+class Kot_Table(models.Model):
+    cafe = models.ForeignKey(cafe, on_delete=models.CASCADE, null=True)
+    number = models.IntegerField()
+
+    def __str__(self):
+        return str(self.number)

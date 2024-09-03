@@ -133,16 +133,16 @@
 </div>
 
 <form id="form" method="GET" action="{% url 'menu' %}" class="row mb-3">
-  
-  
+
+
   <div class="btn-group">
     {% for val in arr %}
-      
+
     <button type="button" data-id="{{val}}" class="btn btn-sub mt-2 btn-primary">{{val}}</button>
     {% endfor %}
   </div>
-  
-    
+
+
     {% comment %} <div class="col-md-2">
         <input value="{{start|date:'Y-m-d'}}" type="date" class="form-control" name="start_date" id="startDate" placeholder="Start Date" autocomplete="off">
     </div>
@@ -157,9 +157,9 @@
 
 </form>
 
-<div class="table-responsive">   
+<div class="table-responsive">
     <table id="truckTable" class="table table-striped" style="width:100%">
-        <thead> 
+        <thead>
             <tr>
                 <th>Name</th>
                 <th>Price</th>
@@ -175,13 +175,13 @@
                     <td>{{ item.price }}</td>
                     <td>{{ item.category }}</td>
                     <td>
-                        <button type="button" class="btn edit-btn" data-bs-toggle="modal" data-bs-target="#editItem" data-name="{{item.name}}" data-price="{{item.price}}" data-id="{{ item.id }}">
+                        <button type="button" id="go" class="btn edit-btn" data-bs-toggle="modal" data-bs-target="#editItem" data-name="{{item.name}}" data-price="{{item.price}}" data-id="{{ item.id }}">
                             <img style="width: 20px;" class="card-img-top" src="{% static 'img/favicon/edit-text.png' %}" alt="Edit Truck" />
                         </button>
                         <button type="button" class="btn delete-btn" data-bs-toggle="modal" data-bs-target="#exampleModal"  data-id='{{ item.id}}'>
                         <img style="width: 20px;" class="card-img-top" src="{% static 'img/favicon/delete.png' %}" alt="Delete Truck" />
                         </button>
-                    </td> 
+                    </td>
                 </tr>
             {% endfor %}
         </tbody>
@@ -213,28 +213,32 @@
           $("#tax_name").val("{{tax.name}}")
         }
         var table = $('#truckTable').DataTable();
-          
+
         let deleteId;
         let editId;
         let itemName;
         let itemPrice;
-        $('.edit-btn').click(function() {
-            editId = $(this).data('id');
-            itemName =  $(this).data('name');
-            itemPrice=  $(this).data('price');
-            console.log("goo.",itemName,itemPrice,$(this).data())
-            $("#item_name").val(itemName);
-            $("#item_price").val(itemPrice);
-            
-        });
-        $('.delete-btn').click(function() {
-            deleteId = $(this).data('id');
-        });
+
+        $(document).on('click', '.edit-btn', function() {
+          console.log("goll")
+          console.log($(this))
+
+          editId = $(this).data('id');
+          itemName = $(this).data('name');
+          itemPrice = $(this).data('price');
+          console.log("goo.",itemName,itemPrice,$(this).data())
+          $("#item_name").val(itemName);
+          $("#item_price").val(itemPrice);
+      });
+      $(document).on('click', '.delete-btn', function() {
+        deleteId = $(this).data('id');
+    });
+
 
         $('#confirmDelete').click(function() {
-          
+
             document.getElementById("closeD").click();
-            
+
             if (deleteId) {
                 $.ajax({
                     url:"{% url 'menu' %}"+ "/" + deleteId,
@@ -254,7 +258,7 @@
                                 });
                                 location.reload();
                             }, 3000);
-                             
+
                               }
                     },
                     error: function(xhr, status, error) {
@@ -266,6 +270,7 @@
         });
 
           $('#confirmEdit').submit(function(event) {
+            console.log("go..too",editId)
             event.preventDefault();
             let formData = $(this).serialize();
             document.getElementById("closeE").click();
@@ -289,7 +294,7 @@
                                 });
                                 location.reload();
                             }, 3000);
-                             
+
                               }
                     },
                     error: function(xhr, status, error) {
@@ -300,8 +305,8 @@
                             $('#alert').append(`<div class="alert alert-success" role="alert">${response}</div>`)
                         }
                         // Handle error
-                        
-     
+
+
                         console.error(error);
                     }
                 });
@@ -316,7 +321,7 @@
             new_url = "{% url 'tax-show' %}" + "/" + "{{tax}}";
           }
           document.getElementById("closeT").click();
-           let dict_send = {"tax":$("#tax_per").val(), 
+           let dict_send = {"tax":$("#tax_per").val(),
           "name":$("#tax_name").val(),"cafe":"{{cafe}}"}
           dict_send = JSON.stringify(dict_send)
               $.ajax({
@@ -338,7 +343,7 @@
                               });
                               location.reload();
                           }, 3000);
-                           
+
                             }
                   },
                   error: function(xhr, status, error) {
@@ -349,12 +354,12 @@
                           $('#alert').append(`<div class="alert alert-success" role="alert">${response}</div>`)
                       }
                       // Handle error
-                      
-   
+
+
                       console.error(error);
                   }
               });
-          
+
         })
 
         // Download PDF
@@ -391,7 +396,7 @@
                 body: rows.slice(1),
                 startY: 20,
                 margin: { top: 15, bottom: 10 },
-                styles: { 
+                styles: {
                     fontSize: 10,
                     cellPadding: 1,
                     cellWidth: 'auto',
@@ -400,7 +405,7 @@
                     overflow: 'linebreak',
                     lineWidth: 0.1
                 },
-               
+
                 theme: 'grid'
             });
 

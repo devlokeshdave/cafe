@@ -26,7 +26,7 @@
         <div class="text-truncate" data-i18n="Dashboards">Dashboards</div>
         <span class="badge bg-danger rounded-pill ms-auto">5</span>
       </a>
-      <ul class="menu-sub">
+      {% comment %} <ul class="menu-sub">
         <li class="menu-item">
           <a href="{% get_theme_variables 'live_preview' %}dashboard/crm/" class="menu-link" target="_blank">
             <div class="text-truncate" data-i18n="CRM">CRM</div>
@@ -56,10 +56,10 @@
             <span class="badge bg-label-primary fs-tiny rounded-pill ms-auto">PRO</span>
           </a>
         </li>
-      </ul>
+      </ul> {% endcomment %}
     </li>
     <!-- Layouts -->
-    <li class="menu-item {% if '/layouts/' in request.path  %}active open{% endif %}">
+    {% comment %} <li class="menu-item {% if '/layouts/' in request.path  %}active open{% endif %}">
       <a href="javascript:void(0);" class="menu-link menu-toggle">
         <i class="menu-icon tf-icons bx bx-layout"></i>
         <div class="text-truncate" data-i18n="Layouts">Layouts</div>
@@ -160,9 +160,9 @@
           </a>
         </li>
       </ul>
-    </li>
+    </li> {% endcomment %}
 
-    <li class="menu-header small text-uppercase">
+    {% comment %} <li class="menu-header small text-uppercase">
       <span class="menu-header-text">Components</span>
     </li>
 
@@ -301,7 +301,7 @@
         <i class="menu-icon tf-icons bx bx-crown"></i>
         <div class="text-truncate" data-i18n="Boxicons">Boxicons</div>
       </a>
-    </li>
+    </li> {% endcomment %}
 
     <li class="menu-header small text-uppercase">
       <span class="menu-header-text">Forms & Tables</span>
@@ -311,14 +311,9 @@
     <li class="menu-item {% if '/forms/' in request.path %}active open{% endif %}">
       <a href="javascript:void(0)" class="menu-link menu-toggle">
         <i class="menu-icon tf-icons bx bx-detail"></i>
-        <div class="text-truncate" data-i18n="Form Elements">Form Elements</div>
+        <div class="text-truncate" data-i18n="Form Elements">Order And Items</div>
       </a>
       <ul class="menu-sub">
-        <li class="menu-item {% if '/menu/' in request.path %}active{% endif %}">
-          <a href="{% url 'menu' %}" class="menu-link">
-            <div class="text-truncate" data-i18n="Basic Inputs">Menu Items</div>
-          </a>
-        </li>
 
         <li class="menu-item {% if '/order-list/' in request.path %}active{% endif %}">
           <a href="{% url 'order-list' %}" class="menu-link">
@@ -331,14 +326,14 @@
             <div class="text-truncate" data-i18n="Basic Inputs">Table List</div>
           </a>
         </li>
-        
+
         <li class="menu-item {% if '/inventory/' in request.path %}active{% endif %}">
           <a href="{% url 'inventory' %}" class="menu-link">
             <div class="text-truncate" data-i18n="Basic Inputs">Inventory</div>
           </a>
         </li>
 
-        <li class="menu-item {% if '/basic_inputs/' in request.path %}active{% endif %}">
+        {% comment %} <li class="menu-item {% if '/basic_inputs/' in request.path %}active{% endif %}">
           <a href="{% url 'forms-basic-inputs' %}" class="menu-link">
             <div class="text-truncate" data-i18n="Basic Inputs">Basic Inputs</div>
           </a>
@@ -347,7 +342,7 @@
           <a href="{% url 'forms-input-groups' %}" class="menu-link">
             <div class="text-truncate" data-i18n="Input groups">Input groups</div>
           </a>
-        </li>
+        </li> {% endcomment %}
       </ul>
     </li>
 
@@ -355,23 +350,47 @@
     <li class="menu-item {% if '/form/' in request.path %}active open{% endif %}">
       <a href="javascript:void(0)" class="menu-link menu-toggle">
         <i class="menu-icon tf-icons bx bx-detail"></i>
-        <div class="text-truncate" data-i18n="Form Elements">Form Layouts</div>
+        <div class="text-truncate" data-i18n="Form Elements">Report</div>
       </a>
       <ul class="menu-sub">
-        <li class="menu-item {% if '/layouts_vertical/' in request.path %}active{% endif %}">
-          <a href="{% url 'form-layouts-vertical' %}" class="menu-link">
-            <div class="text-truncate" data-i18n="Vertical Form">Vertical Form</div>
+        <li class="menu-item {% if '/menu/' in request.path %}active{% endif %}">
+          <a href="{% url 'menu' %}" class="menu-link">
+            <div class="text-truncate" data-i18n="Basic Inputs">Menu Items</div>
           </a>
         </li>
-        <li class="menu-item {% if '/layouts_horizontal/' in request.path %}active{% endif %}">
+        <li class="menu-item {% if '/menu/' in request.path %}active{% endif %}">
+          <a href="{% url 'max-order' %}" class="menu-link">
+            <div class="text-truncate" data-i18n="Basic Inputs">Max Orders</div>
+          </a>
+        </li>
+        {% comment %} <li class="menu-item {% if '/layouts_horizontal/' in request.path %}active{% endif %}">
           <a href="{% url 'form-layouts-horizontal' %}" class="menu-link">
             <div class="text-truncate" data-i18n="Horizontal Form">Horizontal Form</div>
+          </a>
+        </li> {% endcomment %}
+      </ul>
+    </li>
+
+    <li class="menu-item {% if '/form/' in request.path %}active open{% endif %}">
+      <a href="javascript:void(0)" class="menu-link menu-toggle">
+        <i class="menu-icon tf-icons bx bx-detail"></i>
+        <div class="text-truncate" data-i18n="Form Elements">Kot</div>
+      </a>
+      <ul class="menu-sub">
+        <li class="menu-item {% if '/kot-Table/' in request.path %}active{% endif %}">
+          <a href="{% url 'kot-table' %}" class="menu-link">
+            <div class="text-truncate" data-i18n="Basic Inputs">Kot Table</div>
+          </a>
+        </li>
+        <li class="menu-item {% if '/kot-list/' in request.path %}active{% endif %}">
+          <a href="{% url 'kot-list' %}" class="menu-link">
+            <div class="text-truncate" data-i18n="Basic Inputs">Kot List</div>
           </a>
         </li>
       </ul>
     </li>
 
-    <li class="menu-item">
+    {% comment %} <li class="menu-item">
       <a href="{% get_theme_variables 'live_preview' %}form/validation/" class="menu-link" target="_blank">
         <i class="menu-icon tf-icons bx bx-list-check"></i>
         <div class="text-truncate" data-i18n="Form Validation">Form Validation</div>
@@ -391,9 +410,9 @@
         <div class="text-truncate" data-i18n="Datatables">Datatables</div>
         <span class="badge bg-label-primary fs-tiny rounded-pill ms-auto">PRO</span>
       </a>
-    </li>
+    </li> {% endcomment %}
 
-    <li class="menu-header small text-uppercase">
+    {% comment %} <li class="menu-header small text-uppercase">
       <span class="menu-header-text">Misc</span>
     </li>
 
@@ -408,7 +427,7 @@
         <i class="menu-icon tf-icons bx bx-file"></i>
         <div class="text-truncate" data-i18n="Documentation">Documentation</div>
       </a>
-    </li>
+    </li> {% endcomment %}
 
   </ul>
 

@@ -32,7 +32,7 @@ def dashboard(request):
     start_date = end_date - timedelta(days=30)
     order = order.filter(date__range=[start_date,end_date])
     qty = {}
-    
+
     for items in order:
         for key in items.items.keys():
             print("key",key)
@@ -48,29 +48,31 @@ def dashboard(request):
     item_original = {}
     item_discount = {}
     total_item = 0
+    price_per = 0
     for menus in menu:
         print("go..>>",)
-        total_item += menus.total_pieces 
+        total_item += menus.total_pieces
         original_price = menus.total_pieces * menus.price
         num_item = menus.total_pieces
-        # get discount price on total items 
+        # get discount price on total items
         discount_on = original_price * (menus.discount/100)
         # get original price for per item
         original = menus.price
         # get discount in price
         discount_price = original_price - discount_on
         item_original[menus.name] = menus.price
-       
+
         # discount per items in per
-        price_per = discount_price/num_item
+        if num_item !=0 and discount_price !=0:
+            price_per = discount_price/num_item
         item_discount[menus.name] = price_per
         # get new box price
         new_box_price = original - price_per
         # get per items final discount price or profit
-        new_box_per = price_per/original * 100 
+        new_box_per = price_per/original * 100
         per_item_profit[menus.name] = new_box_price
         per_item_per[menus.name] = new_box_per
-    
+
     profit = 0
     profit_per = 0
     original_ = 0
@@ -79,20 +81,20 @@ def dashboard(request):
     total_profit_per = 0
     print("qty", qty,  per_item_profit)
     for items in qty.keys() :
-    
-        profit += qty[items] * per_item_profit[items]
-        original_ += qty[items] * item_original[items]
-        print("original",item_original[items], qty[items], item_original[items] *  qty[items])
-        discount_ += qty[items] * item_discount[items]
-        print("discount",qty[items], item_discount[items], item_discount[items] *  qty[items])
+        if items in qty and items in per_item_profit:
+            profit += qty[items] * per_item_profit[items]
+        if items in qty and items in item_original:
+            original_ += qty[items] * item_original[items]
+            print("original",item_original[items], qty[items], item_original[items] *  qty[items])
+        if items in qty and items in item_discount:
+            discount_ += qty[items] * item_discount[items]
+            print("discount",qty[items], item_discount[items], item_discount[items] *  qty[items])
     if original_ != 0:
         total_profit_per = ((original_ - discount_)/original_) * 100
         profit_am = original_ - discount_
-    
+
     sale_per = (sales/total_item) * 100
     initial_context = {"sale": sales, "sale_per":round(sale_per, 2), "profit_am":round(profit_am, 2),
                        "profit_per":round(total_profit_per,2)}
     initial_context = TemplateLayout.init(None, initial_context)
     return render(request, 'dashboard_analytics.html',initial_context )
-
-    

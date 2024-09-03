@@ -52,20 +52,6 @@
                   <p id="error_date" style="color:red;position: absolute;margin-top: 40px;"><p>
                 </div>
               </div>
-
-              <div class="col-md-4 mb-3">
-                <label class="form-label" for="check">unpaid</label>
-                <div class="form-check">
-                  <input
-                    id="check"
-                    name="unpaid"
-                    type="checkbox"
-                    class="form-check-input"
-                    aria-label="unpaid"
-                    aria-describedby="basic-icon-default-email2"
-                  />
-                </div>
-              </div>
             </div>
 
 
@@ -76,9 +62,7 @@
               <div class="col-md-3">
                 <label class="form-label" for="basic-icon-default-email">QTY</label>
             </div>
-              <div class="col-md-3">
-                  <label class="form-label" for="basic-icon-default-email">Amount</label>
-              </div>
+
             </div>
             <div class="header">
 
@@ -87,57 +71,9 @@
 
             </div>
 
-            <div class="tax">
-              <div class="row">
-                <div class="col-md-4">
-                    <p>Total:</p>
-                </div>
-                <div class="col-md-4">
-                    <p id="total_M"></p>
-                </div>
-            </div>
-              <div class="row">
-                <div class="col-md-4">
-                    <p>Tax:</p>
-                </div>
-                <div class="col-md-4">
-                    <p id="tax_M">{{tax_.tax}}</p>
-                </div>
-            </div>
-            <div id="disc"></div>
 
-              <div class="row">
-                <div class="col-md-4">
-                    <p>Grand Total:</p>
-                </div>
-                <div id="grand-total" class="col-md-4">
-                    <p id="Gtotal_M">{{tax_.tax}}</p>
-                </div>
-            </div>
-            </div>
 
-            <div class="final-bill">
 
-              <div class="row mb-3">
-                <div class="col-md-4 mb-3">
-                  <label class="form-label" for="basic-icon-default-company">Tax Name</label>
-                  <div class="input-group input-group-merge">
-                    <span id="basic-icon-default-company2" class="input-group-text"><i class="bx bx-buildings"></i></span>
-                    <input disabled value="{{tax_.name}}" style="border-right: 1px solid #c7cdd4;border-radius: 0 10px 10px 0;" type="text" id="tax_name" class="form-control" placeholder="Price" aria-label="ACME Inc." aria-describedby="basic-icon-default-company2" />
-                    <p id="error_tax" style="color:red;position: absolute;margin-top: 40px;"><p>
-                  </div>
-                </div>
-
-                <div class="col-md-4 mb-3">
-                  <label class="form-label" for="basic-icon-default-company">Tax</label>
-                  <div class="input-group input-group-merge">
-                    <span id="basic-icon-default-company2" class="input-group-text"><i class="bx bx-buildings"></i></span>
-                    <input disabled value="{{tax_.tax}}" style="border-right: 1px solid #c7cdd4;border-radius: 0 10px 10px 0;" type="number" id="tax_value" class="form-control" placeholder="Price" aria-label="ACME Inc." aria-describedby="basic-icon-default-company2" />
-                  </div>
-                </div>
-              </div>
-
-            </div>
 
             <div style="display:none" class ="row" id="discount-add">
               <div class="row mb-3">
@@ -168,7 +104,8 @@
 
             </div>
 
-            <div class="row mb-3" id="hide">
+            <div class="row mb-3 mt-3" id="hide">
+              <hr/>
               <div class="col-md-4 mb-3">
                 <label class="form-label" for="basic-icon-default-fullname">Item Name</label>
                 <div class="inut-group input-group-merge">
@@ -180,7 +117,7 @@
                   </select>
                 </div>
               </div>
-              <div class="col-md-4 mb-3">
+              <div style="display:none" class="col-md-4 mb-3">
                 <label class="form-label" for="basic-icon-default-company">Price</label>
                 <div class="input-group input-group-merge">
                     <span id="basic-icon-default-company2"  class="input-group-text"><i class="bx bx-buildings"></i></span>
@@ -209,55 +146,11 @@
 
           </div>
 
-          <div class="row custom">
-            <div class="col-md-3 mb-3">
-              <label class="form-label" for="basic-icon-default-email">Customer</label>
-              <div class="form-check form-check-inline">
-                <input class="form-check-input customer-type" type="radio" id="Reg" name="inlineRadioOptions" id="inlineRadio1" value="regular">
-                <label class="form-check-label" for="inlineRadio1">Regular</label>
-              </div>
-              <div class="form-check form-check-inline">
-                <input class="form-check-input customer-type" type="radio" name="inlineRadioOptions" id="other" value="other">
-                <label class="form-check-label" value="other" for="inlineRadio2">Other</label>
-              </div>
-            </div>
-
-            <div id="select_regular" class="col-md-3 mb-3">
-              <label class="form-label" for="basic-icon-default-fullname">Name Search</label>
-              <div class="input-group input-group-merge">
-                <select class="form-control select2" id="regular" style="width: 100%;">
-                  {% for cust in customer %}
-                    <option data-name="{{cust.name}}" data-num="{{cust.mobile}}" value="{{ cust.id }}">{{ cust.name }}</option>
-                  {% endfor %}
-                  <option selected value="add">Add Customer</option>
-                </select>
-              </div>
-            </div>
-
-
-              <div class="col-md-3 mb-3 hide-think">
-                <label class="form-label" for="basic-icon-default-company">Name</label>
-                <div class="input-group input-group-merge">
-                  <span class="input-group-text"><i class="bx bx-buildings"></i></span>
-                  <input type="text" id="regular_name" class="form-control border-fix" placeholder="Price" aria-label="ACME Inc." aria-describedby="basic-icon-default-company2" />
-                  <p id="error_name" style="color:red;position: absolute;margin-top: 40px;"><p>
-                </div>
-              </div>
-
-              <div class="col-md-3 mb-3 hide-think">
-                <label class="form-label" for="basic-icon-default-company">Number</label>
-                <div class="input-group input-group-merge">
-                  <span class="input-group-text"><i class="bx bx-buildings"></i></span>
-                  <input type="number" id="regular_number" class="form-control border-fix" placeholder="Price" aria-label="ACME Inc." aria-describedby="basic-icon-default-company2" />
-                  <p id="error_number" style="color:red;position: absolute;margin-top: 40px;"><p>
-                </div>
-              </div>
-            </div>
 
             <div id="printT" style=" font-family: Arial, sans-serif;width: 350px;margin: 0 auto;text-align: center;" class="go">
               <img style="width:50%;  display: block;margin-left: auto;margin-right: auto;" src="{% static 'img/favicon/cafe_logo.png' %}"/>
-              <h1 style="text-align: center; font-size: 24px;">{{tax_.cafe.name}}</h1>
-              <p style="text-align: center;">M No. {{tax_.cafe.contact_no}}</p>
+              <h1 style="text-align: center; font-size: 24px;">{{cafe.name}}</h1>
+              <p style="text-align: center;">M No. {{cafe.contact_no}}</p>
               <hr style="border: 1px solid #000;">
               <div class="bill-details" style="display: flex;justify-content: space-between">
                   <p style="margin: 5px 0;float:left;" id="date_i"></p>
@@ -268,14 +161,8 @@
               <div style="display: flex;justify-content: space-between;width: 100%;" class="bill-details">
                 <p style="float:left;flex: 1;">Name</p>
                 <p style="margin-left:220px;flex: 1;">QTY</p>
-                <p style="float:right;">Price</p>
               </div>
               <div id="detail_b" class="bill-details">
-              </div>
-              <hr style="border: 1px solid #000;">
-              <div style="text-align: left;margin: 10px 0;" class="total">
-                  <p id="tax_t"></p>
-                  <p style="font-weight: bold;" id="total_t"></p>
               </div>
               <hr style="border: 1px solid #000;">
               <p>Thank you for visiting!</p>
@@ -285,8 +172,6 @@
             <button id="add" type="button" class="btn btn-danger">Add</button>
             <button id="confirm" class="btn btn-success" type="button">Confirm</button>
             <button type="button" id="submit" class="btn btn-primary">Submit</button>
-            <button  style="display:none" id="add-discount" type="button" class="btn btn-danger">Add Discount</button>
-          </div>
         </form>
       </div>
     </div>
@@ -328,55 +213,85 @@
       $("#tax_name").val("{{tax_.name}}")
       $("#tax_value").val("{{tax_.tax}}")
 
+      const check_result = (table, key, value,name) =>{
+        console.log("kek",table)
+        let table_n = localStorage.getItem(table);
+        let current_val = JSON.parse(table_n)
+        if(name !== null){
+          if(key in current_val){
+            current_val[key] = value
+          }else{
+            current_val[key] = value
+          }
+        }else{
+          let nne = current_val
+
+          if(table.includes("kot_")){
+            if("item" in current_val){
+              current_val["item"][key] = value
+            }else{
+              current_val["item"] = {
+                  [key]: value
+              };
+            }
+          }
+        /*  if(!(table.includes("kot_"))){
+          if("item" in current_val){
+            console.log("go...",value)
+            current_val["item"][key] = value
+          }else{
+            current_val["item"] = {
+                [key]: value
+            };
+          }
+        } */
+      }
+        let setI = JSON.stringify(current_val)
+        localStorage.setItem(table,setI);
+        //localStorage.setItem("{{table_no}}",setI)
+      }
+
+      const set_val = (table, key, value, name) =>{
+        let dict
+        if(name===null){
+          dict = {
+            "item": {
+              [key]: value
+            }
+          };
+        }else{
+          dict = {}
+          dict[`${key}`] = value
+        }
+        const dt = new Date();
+        const formattedTimeT = formatTime(dt);
+        dict["time"] = formattedTimeT
+        console.log("go",dict)
+        let setI = JSON.stringify(dict)
+        localStorage.setItem(table,setI);
+      }
+
       const set_local = (key, value, name=null) =>{
           console.log("key",key)
-          let table_n = localStorage.getItem("{{table_no}}");
+          let kot_ = `kot_{{table_no}}`
+
+          console.log("kot",kot_)
+          let table_n = localStorage.getItem(kot_);
+          let table_d = localStorage.getItem("{{table_no}}");
+          let table_n1 = kot_
+          let table_d1 = "{{table_no}}"
           if(table_n){
-            let current_val = JSON.parse(table_n)
-                if(name !== null){
-                  if(key in current_val){
-                    current_val[key] = value
-                  }else{
-                    current_val[key] = value
-                  }
-
-                }else{
-                  if("item" in current_val){
-                    current_val["item"][key] = value
-                  }else{
-                    current_val["item"] = {
-
-                        [key]: value
-
-                    };
-                  }
-
-                }
-
-                let setI = JSON.stringify(current_val)
-                localStorage.setItem("{{table_no}}",setI);
-
-
-          }else{
-            let dict
-              if(name===null){
-                dict = {
-                  "item": {
-                    [key]: value
-                  }
-                };
-              }else{
-                dict = {}
-                dict[`${key}`] = value
-              }
-              const dt = new Date();
-              const formattedTimeT = formatTime(dt);
-              dict["time"] = formattedTimeT
-              console.log("go",dict)
-              let setI = JSON.stringify(dict)
-              localStorage.setItem("{{table_no}}",setI);
-
+            check_result(table_n1,key,value,name)
           }
+         /* if(table_d){
+            check_result(table_d1,key,value,name)
+          } */
+          if(!(table_n)){
+            set_val(table_n1,key,value,name)
+          }
+          /*if(!(table_d)){
+            set_val(table_d1,key,value,name)
+          } */
 
       }
 
@@ -390,18 +305,20 @@
         $("#select_regular").hide()
         const get_local = () =>{
           $("#other").prop("checked", true);
-          if(localStorage.getItem("{{table_no}}")){
-            let table_n = JSON.parse(localStorage.getItem("{{table_no}}"))
+          let kot_ = `kot_{{table_no}}`
+          if(localStorage.getItem(kot_)){
+            let table_n = JSON.parse(localStorage.getItem(kot_))
             if(table_n["item"]){
             Object.keys(table_n["item"]).map((e)=>{
                   key_pat = table_n["item"][e]
                   console.log("kkk==>",key_pat,table_n )
                   $(".item-list").append(`
-                  <div class="row" id=${e}_del>
+                  <hr/>
+                  <div class="row mt-2" id=${e}_del>
                        <div class="col-md-3">
                            <p id=${e}>${key_pat["name"]}</p>
                        </div>
-                        <div class="col-md-3" style="display: flex;">
+                        <div class="col-md-3 col-6" style="display: flex;">
                           <span class="input-group-btn">
                             <button onclick="add_rm('remove', ${e})" type="button" class="btn btn-danger btn-number" data-type="minus" data-field="quant[2]" style="border-radius: 0px;width: 40px; margin-top: -6px; border-top-left-radius: 10px; border-bottom-left-radius: 10px; height: 20px;">
                               <span class="glyphicon glyphicon-minus">-</span>
@@ -414,11 +331,9 @@
                             </button>
                           </span>
                         </div>
-                       <div  class="col-md-1">
-                           <p id=${e}_price>${key_pat["qty"] * key_pat["price"]}</p>
-                       </div>
 
-                       <div  class="col-md-3">
+
+                       <div  class="col-md-3 col-3">
                            <img style="width:20px;" class="delete-btn" onclick="myFunction(${e})" src="{% static 'img/favicon/delete.png' %}"/>
                        </div>
 
@@ -437,13 +352,13 @@
 
                 })
                 console.log("total.1.", total)
-                   $("#total_M").text(total)
+
                    let tax_c = parseFloat("{{tax_.tax}}")
                    console.log("good.",tax_c)
                     let tax_m = (tax_c/100) * total
-                    $("#tax_M").text(tax_m)
+
                     let fin = total+= tax_m
-                     $("#Gtotal_M").text(fin)
+
               }
                 if("custmore" in table_n){
                   if(table_n["custmore"]!=="other"){
@@ -540,13 +455,13 @@
 
             total_m += parseFloat(copy[key]["price"]) * parseFloat(copy[key]["qty"])
           })
-          $("#total_M").text(total_m)
+
           let tax_c = parseFloat("{{tax_.tax}}")
 
               let tax_m = (tax_c/100) * total_m
-              $("#tax_M").text(tax_m)
+
               total_m += tax_m
-              $("#Gtotal_M").text(total_m)
+
               let selectVal = $(`#${ids}`).text()
               let con_d = {"name":selectVal}
               con_d = {...copy[ids]}
@@ -584,14 +499,16 @@
           total -= parseFloat(copy[ids]["price"]) * parseFloat(copy[ids]["qty"]);
           delete copy[ids];
           $(`#${ids}_del`).remove(); // Remove the corresponding row
-          let table_n = localStorage.getItem("{{table_no}}")
+          let kot_ = `kot_{{table_no}}`
+          let table_n = localStorage.getItem(kot_)
           if(table_n){
             table_n = JSON.parse(table_n)
             console.log("copy",copy)
             table_n["item"] = {...copy}
             console.log(table_n,"kke")
             let convert_t = JSON.stringify(table_n)
-            localStorage.setItem("{{table_no}}",convert_t)
+            localStorage.setItem(kot_,convert_t)
+          //  localStorage.setItem("{{table_no}}",convert_t)
           }
 
           let total_m = 0
@@ -600,13 +517,13 @@
             total_m += parseFloat(copy[key]["price"]) * parseFloat(copy[key]["qty"])
           })
           console.log("gtot..",total_m)
-          $("#total_M").text(total_m)
+
           let tax_c = parseFloat("{{tax_.tax}}")
             console.log("good.",tax_c)
               let tax_m = (tax_c/100) * total_m
-              $("#tax_M").text(tax_m)
+
               total_m += tax_m
-              $("#Gtotal_M").text(total_m)
+
         };
 
         // Initialize the select2 plugin
@@ -681,11 +598,12 @@
               console.log("gooog..")
               copy[selectedId] = {"price":price, "qty":qty, "name":selectedName}
               $(".item-list").append(`
-              <div class="row" id="${selectedId}_del">
+              <hr/>
+              <div class="row mt-2" id="${selectedId}_del">
                 <div class="col-md-3">
                   <p id="${selectedId}">${selectedName}</p>
                 </div>
-                <div class="col-md-3" style="display: flex;">
+                <div class="col-md-3 col-6" style="display: flex;">
                   <span class="input-group-btn">
                     <button onclick="add_rm('remove', ${selectedId})" type="button" class="btn btn-danger btn-number" data-type="minus" data-field="quant[2]" style="border-radius: 0px;width: 40px; margin-top: -6px; border-top-left-radius: 10px; border-bottom-left-radius: 10px; height: 20px;">
                       <span class="glyphicon glyphicon-minus">-</span>
@@ -698,10 +616,7 @@
                     </button>
                   </span>
                 </div>
-                <div class="col-md-1">
-                  <p id="${selectedId}_price">${price * qty}</p>
-                </div>
-                <div class="col-md-3">
+                <div class="col-md-3 col-3">
                   <img style="width:20px;" class="delete-btn" onclick="myFunction(${selectedId})" src="{% static 'img/favicon/delete.png' %}"/>
                 </div>
               </div>
@@ -734,13 +649,13 @@
               total_m += parseFloat(copy[key]["price"]) * parseFloat(copy[key]["qty"])
             })
             console.log("gtot..",total_m)
-            $("#total_M").text(total_m)
+
             let tax_c = parseFloat("{{tax_.tax}}")
               console.log("good.",tax_c)
                 let tax_m = (tax_c/100) * total_m
-                $("#tax_M").text(tax_m)
+
                 total_m += tax_m
-                $("#Gtotal_M").text(total_m)
+
 
 
             con_d = {...copy[selectedId]}
@@ -801,14 +716,11 @@
               if (!(itemList.length && itemList.find('div').length)) {
                   return
               }
-            document.getElementById("add-discount").style.display = "inline";
+
             $(".delete-btn").remove();
             $("#add").hide();
             $("#confirm").hide();
-
             let copy_total = total
-
-
             let tax = 0
             let tax_c = parseFloat("{{tax_.tax}}")
               console.log("good.",tax_c)
@@ -849,11 +761,31 @@
         }
 
         $("#clear").click(function(){
-          localStorage.removeItem("{{table_no}}");
+          let kot_ = `kot_{{table_no}}`
+          localStorage.removeItem(kot_);
         })
 
-        $("#submit").click(function(){
+        const updateItems = (dict1, dict2) =>{
+          console.log("goo.d.d",dict1,dict2)
+          // Iterate through each item in kk1
+          for (const itemId in dict2.item) {
+            if (dict2.item.hasOwnProperty(itemId)) {
+              // Check if the item exists in kk
+              if (dict1.item.hasOwnProperty(itemId)) {
+                // If the item exists, add the quantities
+                dict1.item[itemId].qty += dict2.item[itemId].qty;
+              } else {
+                // If the item does not exist, add it to kk
+                dict1.item[itemId] = dict2.item[itemId];
+              }
+            }
+          }
+          return dict1;
+        }
 
+        let saveId
+        $("#submit").click(function(){
+          console.log("gccc",copy)
           if(selectedValue !=="other"){
             let con = true
             let val1 = $("#regular_name").val()
@@ -873,11 +805,18 @@
 
           let total_k = 0
           let tax_val = parseFloat("{{tax_.tax}}")
+          console.log("copy00>>>",copy_,copy)
           Object.keys(copy).map((ke)=>{
             copy_[copy[ke]["name"]] = copy[ke]
+            copy_[copy[ke]["name"]]["id"] = ke
             total_k += parseFloat(copy[ke]["price"]) * parseFloat(copy[ke]["qty"])
             delete copy_[copy[ke]["name"]]["name"]
+
           })
+
+
+
+
           let tax_m = (tax_val/100) * total_k
           total_k += tax_m
 
@@ -891,9 +830,12 @@
           var isChecked = $("#check").is(":checked");
 
         // Assuming #tax is an input element
+        const dt = new Date();
+        const formattedTimeT = formatTime(dt);
           let send_dict = {
               "cafe": "{{ id }}", // Replace with actual value if dynamic
               "table": table,
+              "time":formattedTimeT,
               "unpaid":isChecked,
               "date": date,
               "items": copy_, // Assuming copy is defined elsewhere
@@ -914,12 +856,13 @@
               headers: {
                   'X-HTTP-Method-Override': 'POST'
               },
-              url: "{% url 'add-order' %}", // Replace with actual URL
+              url: "{% url 'kot-add' %}",// Replace with actual URL
               data: final,
               beforeSend: function(xhr, settings) {
                   xhr.setRequestHeader("X-CSRFToken", "{{ csrf_token }}"); // Replace with actual CSRF token value
               },
               success: function(response) {
+                saveId = response.id
                 let date_v = $("#date").val()
                 let name_v = $("#regular_name").val()
                 $(".header").append(
@@ -941,11 +884,9 @@
                 $(".item-list").hide();
                 $(".tax").hide();
                 $(".go").show();
-                $("#tax_t").append(`Tax: <span style="float:right;">${tax_m}</span>`)
-                $("#total_t").append(`Total: <span style="float:right;">${total_k}</span>`)
                 $("#date_i").append(`Date: ${formattedDate}`)
                 $("#time_i").append(`${formattedTime}`)
-                console.log("go.e.e.{{table_no}}")
+                console.log("go.e.e.{{table_no}}",copy_)
                 let rep = "{{table_no}}".replace("Table-","")
                 console.log("go.e.e.",rep,"{{table_no}}")
                 $("#table_nn").append(`<b style="margin: 5px 0;">Roof Top-: ${rep}</b>`)
@@ -963,8 +904,6 @@
                <div style="display: flex;justify-content: space-between;width: 100%;" class="bill-details">
                   <div style="width: calc(66.66% - 10px); float: left; margin-right: 10px; text-align: left;">${e}</div>
                   <div style="width: calc(16.66% - 10px); float: left; margin-right: 10px; text-align: center;">${copy_[e].qty}</div>
-                  <div style="width: calc(16.66% - 10px); float: left; margin-right: 10px; text-align: right;">${copy_[e].price * copy_[e].qty}</div>
-
                 </div>`
 
                }).join("")}
@@ -1003,10 +942,43 @@
               }, 3000);
               }
           });
+          let checkT = localStorage.getItem("{{table_no}}")
+          let old_get = JSON.parse(localStorage.getItem(`kot_{{table_no}}`))
+          if(checkT){
+            let par_  = JSON.parse(checkT)
+            let update_t = JSON.stringify(updateItems(par_,old_get))
+            console.log("e.e.",update_t)
+            localStorage.setItem("{{table_no}}",update_t)
+          }else{
+            let store_ =  JSON.stringify(old_get)
+            localStorage.setItem("{{table_no}}",store_)
+          }
+          let kot_ = `kot_{{table_no}}`
+            localStorage.removeItem(kot_);
+
       });
 
       $('#print').click(function() {
+        let final = {"_method": "POST"};
         event.preventDefault();
+        $.ajax({
+          type: 'POST',
+          headers: {
+              'X-HTTP-Method-Override': 'POST'
+          },
+          url: "{% url 'kot-add' %}" + "/" + saveId, // Replace with actual URL
+          data: final,
+          beforeSend: function(xhr, settings) {
+              xhr.setRequestHeader("X-CSRFToken", "{{ csrf_token }}"); // Replace with actual CSRF token value
+          },
+          success: function(response) {
+
+          },
+          error: function(xhr, textStatus, errorThrown) {
+            const response = JSON.parse(xhr.responseText);
+
+          }
+      });
         var content = document.getElementById("printT").innerHTML;
 
         // Create a new window
@@ -1022,13 +994,8 @@
          myWindow.document.close();
          myWindow.focus();
          myWindow.print();
-
-
-
-            localStorage.removeItem("{{table_no}}");
-
-
-
+         let kot_ = `kot_{{table_no}}`
+            localStorage.removeItem(kot_);
         // Create a new jsPDF instance
        /* event.preventDefault();
         var element = document.querySelector('.whole'); // Select the container to convert to PDF

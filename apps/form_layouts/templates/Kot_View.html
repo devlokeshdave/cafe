@@ -3,11 +3,11 @@
 {% load static %}
 {% load i18n %}
 
-{% block title %}Order View{% endblock %}
+{% block title %}Kot View{% endblock %}
 
 {% block content %}
 <h4 class="py-3 mb-4">
-  <span class="text-muted fw-light">Order /</span> Order View
+  <span class="text-muted fw-light">Kot /</span> Kot View
 </h4>
 
 <!-- Basic Layout -->
@@ -20,36 +20,26 @@
     </div>
     <div id="printT" style=" font-family: Arial, sans-serif;width: 350px;margin: 0 auto;text-align: center;" class="go">
       <img style="width:50%;  display: block;margin-left: auto;margin-right: auto;" src="{% static 'img/favicon/cafe_logo.png' %}"/>
-      <h1 style="text-align: center; font-size: 24px;">{{order.cafe.name}}</h1>
-      <p style="text-align: center;">M No. {{order.cafe.contact_no}}</p>
       <hr style="border: 1px solid #000;">
       <div class="bill-details" style="display: flex;justify-content: space-between">
-          <p style="margin: 5px 0;float:left;" id="date_i">{{order.date}}</p>
-          <p style="margin: 5px 0;float:right;" id="time_i">{{order.time}}</p>
+          <p style="margin: 5px 0;float:left;" id="date_i">{{order.sendDate}}</p>
+          <p style="margin: 5px 0;float:right;" id="time_i">{{order.sendTime}}</p>
       </div>
-      <div id="table_nn"><b style="margin: 5px 0;">Roof Top-: {{order.table}}</b></div>
+      <div id="table_nn"></div>
+
       <hr style="border: 1px solid #000;">
       <div style="display: flex;justify-content: space-between;width: 100%;" class="bill-details">
         <p style="float:left;flex: 1;">Name</p>
         <p style="margin-left:220px;flex: 1;">QTY</p>
-        <p style="float:right;">Price</p>
       </div>
       <div id="detail_b" class="bill-details">
-        {% for item in order_list %}
+        {% for item in kot_item %}
         <div style="display: flex;justify-content: space-between;width: 100%;" class="bill-details">
           <div style="width: calc(66.66% - 10px); float: left; margin-right: 10px; text-align: left;">{{item.name}}</div>
-          <div style="width: calc(16.66% - 10px); float: left; margin-right: 10px; text-align: center;">{{item.qty}}</div>
-          <div style="width: calc(16.66% - 10px); float: left; margin-right: 10px; text-align: right;">{{item.price}}</div>
+          <div style="width: calc(16.66% - 10px); float: left; margin-right: 50px;">{{item.qty}}</div>
         </div>
         {% endfor %}
       </div>
-      <hr style="border: 1px solid #000;">
-      <div style="text-align: left;margin: 10px 0;" class="total">
-          <p id="tax_t"></p>
-          <p style="font-weight: bold;" id="total_t"></p>
-      </div>
-      <hr style="border: 1px solid #000;">
-      <p>Thank you for visiting!</p>
     </div>
   </div>
 </div>
@@ -64,8 +54,39 @@
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 <script>
   $(document).ready(function(){
+    console.log("print","{{print}}")
+    let print = "{{print}}"
+    console.log("pp..",print==="False")
     $('#print').click(function() {
       event.preventDefault();
+      if(print === "False"){
+        let url = window.location.href;
+        let parts = url.split('/');
+        let pk = parts[parts.length - 1];
+        let final = {"_method": "POST"};
+        console.log("ye.s")
+        $.ajax({
+
+          type: 'POST',
+          headers: {
+              'X-HTTP-Method-Override': 'POST'
+          },
+          url: "{% url 'kot-add' %}" + "/" + pk,
+          data: final,
+          beforeSend: function(xhr, settings) {
+              xhr.setRequestHeader("X-CSRFToken", "{{ csrf_token }}");
+          },
+          success: function(response) {
+            localStorage.removeItem("{{table}}")
+          },
+          error: function(xhr, textStatus, errorThrown) {
+            const response = JSON.parse(xhr.responseText);
+
+          }
+        });
+      }
+
+
       var content = document.getElementById("printT").innerHTML;
 
       // Create a new window
@@ -81,9 +102,6 @@
        myWindow.document.close();
        myWindow.focus();
        myWindow.print();
-
-
-
           localStorage.removeItem("{{table_no}}");
 
 

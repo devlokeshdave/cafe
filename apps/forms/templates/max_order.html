@@ -40,7 +40,7 @@
 </h4>
 
 <form method="GET" action="{% url 'max-order' %}" class="row mb-3">
-   
+
 <div class="row">
     <div class="col-md-3 text-end">
         <button type="button" class="btn btn-danger" id="downloadPDF">Download PDF</button>
@@ -57,15 +57,15 @@
     </div>
 </div>
 </form>
-<div class="table-responsive">   
+<div class="table-responsive">
     <table id="truckTable" class="table table-striped" style="width:100%">
-        <thead> 
+        <thead>
             <tr>
                 <th>Item</th>
                 <th>Qty</th>
                 <th>Price</th>
                 <th>Total</th>
-               
+
             </tr>
         </thead>
         <tbody>
@@ -75,7 +75,7 @@
                     <td>{{ item.qty }}</td>
                     <td>{{ item.price }}</td>
                     <td>{{ item.total }}</td>
-                 
+
                 </tr>
             {% endfor %}
         </tbody>
@@ -93,8 +93,10 @@
         // Initialize datepickers
 
         // Initialize DataTable
-        var table = $('#truckTable').DataTable();
-        
+        var table = $('#truckTable').DataTable({
+          "order": [[1, "desc"]]
+        });
+
         let deleteId;
         $('.delete-btn').click(function() {
             deleteId = $(this).data('id');
@@ -121,7 +123,7 @@
                                 });
                                 location.reload();
                             }, 3000);
-                             
+
                               }
                     },
                     error: function(xhr, status, error) {
@@ -166,7 +168,7 @@
                 body: rows.slice(1),
                 startY: 20,
                 margin: { top: 15, bottom: 10 },
-                styles: { 
+                styles: {
                     fontSize: 10,
                     cellPadding: 1,
                     cellWidth: 'auto',
@@ -175,7 +177,7 @@
                     overflow: 'linebreak',
                     lineWidth: 0.1
                 },
-               
+
                 theme: 'grid'
             });
 

@@ -1,5 +1,6 @@
 from django.views.generic import TemplateView
 from web_project import TemplateLayout
+from django.shortcuts import redirect, render
 
 
 """
@@ -16,3 +17,8 @@ class PagesView(TemplateView):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
 
         return context
+
+def error_view(request, exception):
+    initial_context = {}
+    initial_context = TemplateLayout.init(None, initial_context)
+    return render(request, 'pages_misc_error.html',status=404)

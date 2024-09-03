@@ -8,7 +8,7 @@
 <link rel="stylesheet" href="https://cdn.datatables.net/buttons/3.0.2/css/buttons.bootstrap5.css"/>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css"/>
 
-{% block title %}Menu Details{% endblock %}
+{% block title %}Kot LIst{% endblock %}
 
 {% block content %}
 
@@ -23,7 +23,7 @@
           </button>
         </div>
         <div class="modal-body">
-          Do you want to delete this Item ?
+          Do you want to delete this item?
         </div>
         <div class="modal-footer">
           <button type="button" id="closeD" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -33,21 +33,20 @@
     </div>
   </div>
 
-  <div id="alert"></div>
+<div id="alert"></div>
 
 <h4 class="py-3 mb-4">
-  <span class="text-muted fw-light">Extended UI /</span> Menu Details
+  <span class="text-muted fw-light">Kot /</span> Kot List
 </h4>
 
 <form method="GET" action="{% url 'order-list' %}" class="row mb-3">
-
 <div class="row">
     <div class="col-md-3 text-end">
         <button type="button" class="btn btn-danger" id="downloadPDF">Download PDF</button>
-        <a href="{% url 'add-order' %}" class="btn btn-primary" id="addDetails">Add Order</a>
+        <a href="{% url 'kot-add' %}" class="btn btn-primary" id="addDetails">Add Kot</a>
     </div>
     <div class="col-md-2">
-        <input  type="date" class="form-control" name="start_date" id="startDate" placeholder="Start Date" autocomplete="off">
+        <input type="date" class="form-control" name="start_date" id="startDate" placeholder="Start Date" autocomplete="off">
     </div>
     <div class="col-md-2">
         <input type="date" class="form-control" name="end_date" id="endDate" placeholder="End Date" autocomplete="off">
@@ -62,49 +61,32 @@
         <thead>
             <tr>
                 <th>Id</th>
-                <th>Table</th>
-                <th>Name</th>
+                <th>Items</th>
                 <th>Date</th>
-                <th>Tax</th>
-                <th>Discount</th>
-                <th>Total</th>
-                <th>Orders</th>
-                <th>Action(E/D)</th>
+                <th>Order Time</th>
+                <th>Action (E/D)</th>
             </tr>
         </thead>
         <tbody>
             {% for item in order %}
                 <tr>
-                    <td>{{item.id}}</td>
-                    <td>{{ item.table }}</td>
-                    <td>{{ item.name }}</td>
-                    <td>{{ item.date }}</td>
-                    <td>{{ item.tax }}</td>
-                    <td>{{ item.discount }}</td>
-                    <td>{{ item.total }}</td>
+                    <td>{{ item.id }}</td>
                     {% with item.items|join:", " as item_list %}
                         <td>{{ item_list }}</td>
-                        {% endwith %}
+                    {% endwith %}
+                    <td>{{ item.sendDate }}</td>
+                    <td>{{ item.sendTime }}</td>
                     <td>
-                        <a href="{% url 'order-view' item.id %}">
+                        <a href="{% url 'kot-view' item.id %}">
                             <img src="{% static 'img/favicon/view.png' %}" alt="View" style="width: 20px;" class="card-img-top">
                         </a>
                         <button type="button" class="btn delete-btn" data-bs-toggle="modal" data-bs-target="#exampleModal" data-id="{{ item.id }}">
-                        <img style="width: 20px;" class="card-img-top" src="{% static 'img/favicon/delete.png' %}" alt="Delete Truck" />
+                            <img style="width: 20px;" class="card-img-top" src="{% static 'img/favicon/delete.png' %}" alt="Delete Truck">
                         </button>
                     </td>
                 </tr>
             {% endfor %}
         </tbody>
-        <tfoot>
-          <tr>
-              <th colspan="4">Totals</th>
-              <th id="totalTax"></th>
-              <th></th>
-              <th id="totalAmount"></th>
-              <th colspan="2" id="netTotal"></th>
-          </tr>
-      </tfoot>
     </table>
 </div>
 
@@ -115,76 +97,49 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
 
 <script>
-
-
     $(document).ready(function() {
         // Initialize datepickers
+
+
         // Initialize DataTable
-
         var table = $('#truckTable').DataTable({
-          "order": [[0, "desc"]], // Index 2 corresponds to the Date column
-          "footerCallback": function(row, data, start, end, display) {
-            var api = this.api();
-
-            // Calculate total for column
-            var calculateColumnTotal = function(index) {
-                return api
-                    .column(index, { page: 'all' })
-                    .data()
-                    .reduce(function(a, b) {
-                        return parseFloat(a) + parseFloat(b);
-                    }, 0);
-            };
-
-            // Update footer
-            var totalTax = calculateColumnTotal(4);
-            var totalAmount = calculateColumnTotal(6);
-            var netTotal = totalAmount - totalTax;
-
-            $(api.column(4).footer()).html(totalTax.toFixed(2));
-            $(api.column(6).footer()).html(totalAmount.toFixed(2));
-            $(api.column(7).footer()).html(netTotal.toFixed(2));
-        }
-      });
-
-        let deleteId;
-        $('.delete-btn').click(function() {
-            deleteId = $(this).data('id');
+            "order": [[0, "desc"]]
         });
 
+        let deleteId;
+        $(document).on('click', '.delete-btn', function() {
+          deleteId = $(this).data('id');
+        });
         $('#confirmDelete').click(function() {
-            document.getElementById("closeD").click();
+          console.log("go...e",deleteId)
             if (deleteId) {
                 $.ajax({
-                    url:"{% url 'add-order' %}"+ "/" + deleteId,
+                    url: "{% url 'kot-list' %}" + "/" + deleteId,
                     type: 'DELETE',
                     headers: {
-                'X-HTTP-Method-Override': 'DELETE'
-              },  beforeSend: function(xhr, settings) {
-                xhr.setRequestHeader("X-CSRFToken", "{{ csrf_token }}"); // Set CSRF token
-              },
+                        'X-HTTP-Method-Override': 'DELETE'
+                    },
+                    beforeSend: function(xhr, settings) {
+                        xhr.setRequestHeader("X-CSRFToken", "{{ csrf_token }}");
+                    },
                     success: function(result) {
-                        // Handle success
                         if(result.msg !== undefined){
-                              $('#alert').append(`<div class="alert alert-success" role="alert">Data deleted successfully</div>`)
-                              setTimeout(function() {
+                            $('#alert').append('<div class="alert alert-success" role="alert">Data deleted successfully</div>');
+                            setTimeout(function() {
                                 $('.alert').fadeOut('slow', function() {
                                     $(this).remove();
                                 });
                                 location.reload();
                             }, 3000);
-
-                              }
+                        }
                     },
                     error: function(xhr, status, error) {
-                        // Handle error
                         console.error(error);
                     }
                 });
+                $('#closeD').click(); // Close modal
             }
         });
-
-
 
         // Download PDF
         $('#downloadPDF').click(function() {
@@ -199,18 +154,14 @@
             const rows = [];
             const headers = [];
             $('#truckTable thead tr th').each(function(index) {
-                if (index < 7) {
-                    headers.push($(this).text());
-                }
+                headers.push($(this).text());
             });
             rows.push(headers);
 
             $('#truckTable tbody tr').each(function() {
                 const row = [];
                 $(this).find('td').each(function(index) {
-                    if (index < 7) {
-                        row.push($(this).text());
-                    }
+                    row.push($(this).text());
                 });
                 rows.push(row);
             });
@@ -229,7 +180,6 @@
                     overflow: 'linebreak',
                     lineWidth: 0.1
                 },
-
                 theme: 'grid'
             });
 

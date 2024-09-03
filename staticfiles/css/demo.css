@@ -145,3 +145,30 @@
 .centered-border::after {
   margin-left: 10px;
 }
+
+.border-fix{
+  border-right: 1px solid #c7cdd4;
+  border-radius: 0 10px 10px 0;
+}
+
+
+.go {
+  font-family: Arial, sans-serif;
+  width: 300px;
+  margin: 0 auto;
+  text-align: center;
+}
+h1 {
+  font-size: 24px;
+  margin-bottom: 0;
+}
+.bill-details, .total {
+  text-align: left;
+  margin: 10px 0;
+}
+.bill-details p, .total p {
+  margin: 5px 0;
+}
+.total {
+  font-weight: bold;
+}

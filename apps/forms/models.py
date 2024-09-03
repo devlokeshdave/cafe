@@ -14,19 +14,19 @@ class Menu(models.Model):
     discount = models.FloatField(default=0)
     total_pieces = models.IntegerField(default=1)
     category = models.CharField(max_length=100, default="Beverages")
-    
+
     def __str__(self):
         return self.name
-    
-    
+
+
 class Number_table(models.Model):
     cafe = models.ForeignKey(cafe, on_delete=models.CASCADE, null=True)
     number = models.IntegerField()
-    
+
     def __str__(self):
         return str(self.number)
-    
-    
+
+
 
 class Order_list(models.Model):
     cafe = models.ForeignKey(cafe, on_delete=models.CASCADE, null=True)
@@ -37,16 +37,17 @@ class Order_list(models.Model):
     tax = models.FloatField()
     discount = models.FloatField(blank=True, null=True)
     total = models.FloatField()
-    
+    time = models.TimeField(null=True)
+    unpaid = models.BooleanField(default=False)
+
     def __str__(self):
         return self.table
-    
+
 
 class tax(models.Model):
     cafe = models.ForeignKey(cafe, on_delete=models.CASCADE)
     name = models.CharField(max_length=100)
     tax = models.FloatField()
-    
+
     def __str__(self):
         return self.name
-    

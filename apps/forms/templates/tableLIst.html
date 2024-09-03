@@ -21,30 +21,36 @@
         <div class="demo-inline-spacing">
           {% for table in tables %}
           <span
-            onclick="goto('{{ forloop.counter0 }}')"
-          style="width: 200px;
-            height: 200px;
-            text-align: center;
-            align-content: center;" class="badge bg-primary">{{table}}
-
-            <span onclick = "add_table('remove')" style="position: absolute;
-              margin-top: -90px;
-              font-size: 16px;
-              margin-left: 60px;">X
-            </span>
+            id="table_{{ forloop.counter0 }}"
+             onclick="goto('{{ forloop.counter0 }}')"
+            class="badge bg-primary"
+            draggable="true"
+            ondragstart="drag(event)"
+            ondragend="dragEnd(event)"
+            style="width: 200px; height: 200px; text-align: center; align-content: center; position: relative;"
+          >
+            <p>{{ table }}</p>
+            <br/>
+            <div id="rm_{{forloop.counter0}}" class="start">
+              <span id="timeS_{{ forloop.counter0 }}" class="mt-2 timeC">time</span>
+              <br/><br/>
+              <span id="total_{{ forloop.counter0 }}" class="mt-2 totalC">Total</span>
+            </div>
+            <span>
+            <button type="button" onclick="clearStore(event, {{ forloop.counter0 }})"  style="width: 20px;height: 20px;font-size: 12px;" class="btn mt-4 btn-danger">Clear</button></span>
+            <span onclick="add_table('remove')" style="position: absolute; margin-top: -100px; font-size: 16px; margin-left: 60px;">X</span>
+            <span id="clear_{{ forloop.counter0 }}" onclick="clearFun({{ forloop.counter0 }})" class="clear" style="position: absolute; margin-top: -100px; font-size: 12px; margin-left: -280px;">clear</span>
           </span>
           {% endfor %}
-          <span
-          id="add_table"
-          onclick = "add_table('add')"
-          style="width: 200px;
-            height: 200px;
-            text-align: center;
-            align-content: center;" class="badge bg-primary">
-                
-            <img style="width:80px;" class="delete-btn"  src="{% static 'img/favicon/plus.png' %}"/>
-            </span>
-          </span>
+          <div
+            id="add_table"
+            onclick="add_table('add')"
+            style="width: 200px; height: 200px; text-align: center; align-content: center;"
+            class="badge bg-primary"
+          >
+            <img style="width:80px;" class="delete-btn" src="{% static 'img/favicon/plus.png' %}"/>
+            <p style="margin-top: -30px; visibility: hidden;">Add</p>
+          </div>
         </div>
       </div>
       <hr class="m-0" />
@@ -52,6 +58,7 @@
   </div>
 </div>
 {% endblock %}
+
 {% block page_js %}
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.3/html2pdf.bundle.min.js"></script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -60,34 +67,196 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 <script>
-    $(document).ready(function() {
-      window.goto = function(id) {
-        let one = parseInt(id) + 1
-        console.log("one",one)
-        window.location.href = "{% url 'add-order' %}" + "/" + one;
+  const kotList = {{ kot_list|safe }};
+  console.log("go...e")
+  console.log(kotList)
+  kotList.map((kot)=>{
+    let itme_ = {}
+    let tab_
+    kot.map((menu)=>{
+          Object.keys(menu.items).map((item)=>{
+            if(menu.items[item]["id"] in itme_){
+              itme_[menu.items[item]["id"]]["qty"] += menu.items[item]["qty"]
+            }else{
+              itme_[menu.items[item]["id"]] = {
+                "price": menu.items[item]["price"],
+                "qty": menu.items[item]["qty"],
+                "name":item
+              }
+            }
+
+          })
+          tab_ = menu.table
+    })
+    console.log("kot.m",itme_,kot)
+
+    console.log("tab>",tab_)
+    let checkT = localStorage.getItem(`tab_${tab_}`)
+    let old_get = {"item":itme_}
+    console.log("og.",itme_)
+    if(checkT){
+      let par_  = JSON.parse(checkT)
+      let update_t = JSON.stringify(updateItems(par_,old_get))
+      console.log("e.e.",update_t)
+      localStorage.setItem(tab_,update_t)
+    }else{
+      let store_ =  JSON.stringify(old_get)
+      localStorage.setItem(tab_,store_)
     }
-   
-    window.add_table = function(value){
-         let final_data = {"type":value}
-        $.ajax({
-          type:"POST",
-          headers:{
-             'X-HTTP-Method-Override': 'POST',
-          },
-          url:"{% url 'table-list' %}",
-          data:final_data,
-          beforeSend: function(xhr, settings) {
-            xhr.setRequestHeader("X-CSRFToken", "{{ csrf_token }}"); // Replace with actual CSRF token value
-        },success: function(response) {
+  })
+  {% comment %} console.log(kotList); {% endcomment %}
+
+  function drag(event) {
+    event.dataTransfer.setData("text", event.target.id);
+  }
+
+  function dragEnd(event) {
+    event.target.style.opacity = "1";
+  }
+
+  function capitalizeFirstLetter(string) {
+    return string.charAt(0).toUpperCase() + string.slice(1);
+}
+function split_word(string) {
+    let first = string.split("_")[0]
+    let last = parseInt(string.split("_")[1]) + 1
+    let checkk = capitalizeFirstLetter(first)
+    return `${checkk}-${last}`
+
+}
+
+  document.querySelectorAll('.badge').forEach(item => {
+    item.addEventListener('dragover', (event) => {
+      event.preventDefault();
+      event.target.style.opacity = "0.5";
+    });
+
+    item.addEventListener('dragleave', (event) => {
+      event.target.style.opacity = "1";
+    });
+
+    item.addEventListener('drop', (event) => {
+      event.preventDefault();
+      event.target.style.opacity = "1";
+
+      const data = event.dataTransfer.getData("text");
+      let draggedElement = document.getElementById(data);
+      const targetElement = event.target;
+      console.log("ddke", split_word(data), split_word(targetElement.id));
+
+      let get_ = localStorage.getItem(split_word(data));
+      let put_ = localStorage.getItem(split_word(targetElement.id));
+      console.log("lwlw",get_)
+      if (get_) {
+        console.log("lwlw",put_)
+        if (!(put_)) {
+
+          let draggedStartContent = draggedElement.querySelector('.start').innerHTML;
+          const targetStartContent = targetElement.querySelector('.start').innerHTML;
+          console.log("lll", draggedStartContent, targetStartContent, data, targetElement.id);
+          draggedElement.querySelector('.start').innerHTML = targetStartContent;
+          targetElement.querySelector('.start').innerHTML = draggedStartContent;
+          let parse_ = JSON.parse(get_);
+          console.log("data..",parse_)
+          let get_i = split_word(targetElement.id);
+          let new_ = JSON.stringify(parse_);
+          localStorage.removeItem(split_word(draggedElement.id));
+          localStorage.setItem(split_word(targetElement.id), new_);
+
+        }
+      }
+
+      // Swap content excluding <p> tags
+
+    });
+
+  });
+
+  $(document).ready(function() {
+    window.goto = function(id) {
+      let one = parseInt(id) + 1;
+      console.log("one", one);
+      window.location.href = "{% url 'add-order' %}" + "/" + one;
+    };
+
+    window.clearStore = function(event,table){
+      event.preventDefault(); // Prevent default behavior (if any)
+      event.stopPropagation();
+      let count = parseInt(table) + 1
+      let tab = `Table-${count}`
+      console.log("glle",tab)
+      localStorage.removeItem(tab);
+      document.getElementById(`rm_${table}`).innerHTML = "";
+
+    };
+
+    function formatTime(date) {
+      let hours = String(date.getHours()).padStart(2, '0');
+      let minutes = String(date.getMinutes()).padStart(2, '0');
+      return `${hours}:${minutes}`;
+    }
+
+    const d = new Date();
+    $(".stopC").hide();
+    $(".timeC").hide();
+    $(".totalC").hide();
+    $(".clear").hide();
+
+    var demoInlineSpacingDiv = document.querySelector('.demo-inline-spacing');
+    var pElements = demoInlineSpacingDiv.getElementsByTagName('p');
+
+    var pData = [];
+    for (var i = 0; i < pElements.length; i++) {
+      if (pElements[i].textContent !== "Add") {
+        pData.push(pElements[i].textContent);
+        let rm = pElements[i].textContent.replace("table ", "");
+        let pl = parseInt(rm);
+        let table_n = JSON.parse(localStorage.getItem(`Table-${pl}`));
+        let ids = `timeS_${pl - 1}`;
+        let totalS = `total_${pl - 1}`;
+        console.log("go.e", ids, `Table-${rm}`, `Table-${pl}`, table_n);
+        if (table_n) {
+          if (table_n["time"]) {
+            console.log("tim", table_n["time"], `#${ids}`);
+            $(`#${ids}`).show();
+            $(`#${ids}`).text(table_n["time"]);
+          }
+          if (table_n["item"]) {
+            let total_ = 0;
+            Object.keys(table_n["item"]).map((key) => {
+              total_ += parseFloat(table_n["item"][key]["price"]) * parseFloat(table_n["item"][key]["qty"]);
+            });
+            $(`#${totalS}`).show();
+            let tax_c = parseFloat("{{tax.tax}}");
+            let tax_m = (tax_c / 100) * total_;
+            total_ += tax_m;
+
+            $(`#${totalS}`).text(`Total:  ${total_}`);
+          }
+        }
+      }
+    }
+
+    // Log the data to the console
+    console.log(pData);
+
+    window.add_table = function(value) {
+      let final_data = { "type": value };
+      $.ajax({
+        type: "POST",
+        headers: {
+          'X-HTTP-Method-Override': 'POST',
+        },
+        url: "{% url 'table-list' %}",
+        data: final_data,
+        beforeSend: function(xhr, settings) {
+          xhr.setRequestHeader("X-CSRFToken", "{{ csrf_token }}");
+        },
+        success: function(response) {
           location.reload();
         }
-        
-        })
-
-      }
-    });         
-    
-  
-
+      });
+    }
+  });
 </script>
 {% endblock page_js %}
